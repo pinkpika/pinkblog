@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J63BRH65VP');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>淺談計算機圖學 | Pink Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="計算機圖學極為廣大，此內容可能還不到 1%，下面內容是由大學時期圖學課程零星印象整理的，可能有錯誤的敘述，歡迎指出（免責聲明ＱＱＱ 😂）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淺談計算機圖學">
+<meta property="og:url" content="http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/index.html">
+<meta property="og:site_name" content="Pink Blog">
+<meta property="og:description" content="計算機圖學極為廣大，此內容可能還不到 1%，下面內容是由大學時期圖學課程零星印象整理的，可能有錯誤的敘述，歡迎指出（免責聲明ＱＱＱ 😂）">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/whatiscg.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/siggraph2021.jpg">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/ToyStory.jpg">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/TimeCrisis.jpg">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/game.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/GraphicsPipeline.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/GeometryPipeline.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/ViewTransform.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/Phong.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/Frustum.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/CubeClipping.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/ScreenMapping.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/Rasterization.webp">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/3DPipeline.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/cpugpucores.jpg">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/screen1.jpg">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/result640.jpg">
+<meta property="article:published_time" content="2022-01-01T18:58:28.000Z">
+<meta property="article:modified_time" content="2022-01-02T08:25:58.349Z">
+<meta property="article:author" content="pinkpika">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/whatiscg.png">
+  
+    <link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/pinkblog/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/pinkblog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/pinkblog/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/pinkblog/" id="logo">Pink Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/pinkblog/">home</a>
+        
+          <a class="main-nav-link" href="/pinkblog/about">about</a>
+        
+          <a class="main-nav-link" href="/pinkblog/archives">archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <!--
+        
+          <a id="nav-rss-link" class="nav-icon" href="/pinkblog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜尋"></a>
+        -->
+        <a id="nav-twitter-btn" class="nav-icon" target="_blank" rel="noopener" href="https://twitter.com/pinkpika_coding" title="twitter"></a>
+        <a id="nav-github-btn" class="nav-icon" target="_blank" rel="noopener" href="https://github.com/pinkpika" title="github"></a>
+        <a id="nav-linkedin-btn" class="nav-icon" target="_blank" rel="noopener" href="https://www.linkedin.com/in/pink-pika-42907613a/" title="linkedin"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜尋"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://pinkpika.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-淺談計算機圖學" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/" class="article-date">
+  <time class="dt-published" datetime="2022-01-01T18:58:28.000Z" itemprop="datePublished">1月 2 2022</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/pinkblog/categories/Computer-Graphics/">Computer Graphics</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      淺談計算機圖學
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>計算機圖學極為廣大，此內容可能還不到 1%，下面內容是由大學時期圖學課程零星印象整理的，可能有錯誤的敘述，歡迎指出（免責聲明ＱＱＱ 😂）</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="什麼是計算機圖學？"><a href="#什麼是計算機圖學？" class="headerlink" title="什麼是計算機圖學？"></a>什麼是計算機圖學？</h2><p>計算機圖學（Computer Graphics）又稱電腦圖學，是指用電腦所創造的圖形。更具體的說，就是在電腦上用專門的軟體和硬體用來表現和控制圖像資料。<br>計算機圖學是為了讓使用者能更容易與電腦互動，對多種媒體有深遠的影響，並徹底改變了動畫、電影和遊戲行業。</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/LXo0WdlELJk" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>計算機圖學的主題包括用戶界面設計、精靈圖形、渲染、光線追踪、幾何處理、計算機動畫、矢量圖、3D建模、著色器、GPU設計、隱式曲面、可視化、科學計算、圖像處理、計算攝影、科學可視化、計算幾何和計算機視覺…還有更多。</p>
+<h2 id="計算機圖學、影像處理、電腦視覺、圖形辨識分不清？"><a href="#計算機圖學、影像處理、電腦視覺、圖形辨識分不清？" class="headerlink" title="計算機圖學、影像處理、電腦視覺、圖形辨識分不清？"></a>計算機圖學、影像處理、電腦視覺、圖形辨識分不清？</h2><p>有時候會遇到分不清楚計算機圖學、影像處理、電腦視覺、圖形辨識<br>可以從 input 和 output 的角度來看差異<br>參考網站 <a target="_blank" rel="noopener" href="https://cg2010studio.com/2011/09/20/%E4%BB%80%E9%BA%BC%E6%98%AF%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8%EF%BC%9F/">逍遙文工作室-什麼是計算機圖學？</a></p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/whatiscg.png" class="" width="600" title="whatiscg" alt="比較表格(from 逍遙文工作室-什麼是計算機圖學？)">
+
+<h2 id="哪裡可以知道最新的圖學趨勢呢？"><a href="#哪裡可以知道最新的圖學趨勢呢？" class="headerlink" title="哪裡可以知道最新的圖學趨勢呢？"></a>哪裡可以知道最新的圖學趨勢呢？</h2><p>美國計算機協會(ACM)專為圖學領域組了一個小組叫做 SIGGRAPH，每年都會舉辦會議，例如今年的虛擬會議連結 ( <a target="_blank" rel="noopener" href="https://s2021.siggraph.org/">https://s2021.siggraph.org/</a> )，不僅有最新的圖學技術，也有很多人投稿論文，對學習圖學的人來說就像最高殿堂一樣。</p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/siggraph2021.jpg" class="" width="600" title="siggraph2021" alt="siggraph2021官方網站(from SIGGRAPH)">
+
+<p>不過由於越來越多人參與這項領域，導致後來又多出了 SIGGRAPH Asia 的會議。(<a target="_blank" rel="noopener" href="https://sa2021.siggraph.org/en/">https://sa2021.siggraph.org/en/</a>)</p>
+<p>此外還有個推薦的的網站，整理了歷屆 SIGGRAPH 的 Paper，而且是台灣人做的呢！(<a target="_blank" rel="noopener" href="https://kesen.realtimerendering.com/">https://kesen.realtimerendering.com/</a>)</p>
+<h2 id="動畫裡應用的計算機圖學？"><a href="#動畫裡應用的計算機圖學？" class="headerlink" title="動畫裡應用的計算機圖學？"></a>動畫裡應用的計算機圖學？</h2><p>皮克斯第一部動畫是 1995 年的《玩具總動員》 Toy Story </p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/5bMDPpxNbys" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>當年的畫面就包含細膩的陰影、直接照明、間接照明、反射效果，<br>每一個畫面(frame)依照畫面複雜度，需要一台電腦 45 分鐘到 30 小時畫出來，而且需要 114,240 個畫面，最後約需要 800,000 一台電腦一小時的工時。</p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/ToyStory.jpg" class="" width="400" title="ToyStory" alt="ToyStory電影畫面(from ToyStory)">
+
+<p>當然隨著電腦運算能力飛快地成長，讓現在能計算出更漂亮的畫面，有更自然的光影、更真實的材質或毛髮，下面是玩具總動員 1 到 4 的進展。<br><a target="_blank" rel="noopener" href="https://www.insider.com/pixars-animation-evolved-toy-story-2019-6">https://www.insider.com/pixars-animation-evolved-toy-story-2019-6</a></p>
+<h2 id="遊戲裡應用的計算機圖學？"><a href="#遊戲裡應用的計算機圖學？" class="headerlink" title="遊戲裡應用的計算機圖學？"></a>遊戲裡應用的計算機圖學？</h2><p>這是大約與玩具總動員同期1995年的遊戲畫面</p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/TimeCrisis.jpg" class="" width="400" title="TimeCrisis" alt="TimeCrisis遊戲畫面(from TimeCrisis)">
+
+<p>而遊戲也跟動畫相同，電腦能力飛快地成長下，這兩年主打真實畫面的遊戲影片 </p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/VXj5-GJSna4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>然而遊戲本身關聯到技術就非常多，這邊網站提到一個遊戲引擎需要涵蓋的技術。<br><a target="_blank" rel="noopener" href="http://hightalestudios.com/2017/03/game-engine-architecture-2nd-edition-overview-ch-1-part-2/">http://hightalestudios.com/2017/03/game-engine-architecture-2nd-edition-overview-ch-1-part-2/</a></p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/game.png" class="" width="600" title="遊戲引擎技術" alt="遊戲引擎技術(from hightalestudios)">
+
+<h2 id="那畫面到底是如何產生的呢？"><a href="#那畫面到底是如何產生的呢？" class="headerlink" title="那畫面到底是如何產生的呢？"></a>那畫面到底是如何產生的呢？</h2><blockquote>
+<p>為什麼常常聽到說玩遊戲一定要有 GPU，難道 CPU 不行嗎？</p>
+</blockquote>
+<p>Nvidia 出了一個影片，真實的還原 CPU 和 GPU 是如何畫出圖片的？</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/-P28LKWTzrI" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>GPU 會有如此快速的效果是運用到了硬體加速 ( Hardware acceleration )，簡單形容就是把程式碼軟體要做的事給硬體做，特化某些流程或演算法，其他像是專為機器學習設計的硬體晶片等等的。</p>
+<hr>
+<p>我們先來看一下最簡單的繪圖管線 ( Graphics pipeline )</p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/GraphicsPipeline.png" class="" width="600" title="繪圖管線" alt="繪圖管線(from wiki)">
+
+<ol>
+<li><p><strong>Application: 由應用程式接收指令，執行載入或變換模型或場景</strong></p>
+</li>
+<li><p><strong>Geometry: 有下列多個步驟要完成</strong></p>
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/GeometryPipeline.png" class="" width="800" title="Geometry" alt="Graphics Pipeline(from wiki)">
+
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/ViewTransform.png" class="" width="600" title="ViewTransform" alt="Camera Transformation 將世界座標轉成相機座標 (from wiki)">
+
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/Phong.png" class="" width="600" title="Phong" alt="Lighting 有很多種方式，最常用初階的是 Phong reflection model (from wiki)">
+
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/Frustum.png" class="" width="300" title="Frustum" alt="Frustum: 投影(Projection)近平面和遠平面之間的物件 (from wiki)">
+
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/CubeClipping.png" class="" width="600" title="CubeClipping" alt="Clipping: 把看不到的物件移除 (from wiki)">
+
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/ScreenMapping.png" class="" width="600" title="ScreenMapping" alt="Window-Viewport transformation 轉換成視窗座標 (from wiki)"></li>
+<li><p><strong>Rasterization: 由於電腦螢幕或圖片都是解析度去顯示，所以必須轉成一個一個點</strong></p>
+ <img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/Rasterization.webp" class="" width="600" title="Rasterization" alt="Rasterization (from wiki)"></li>
+</ol>
+<hr>
+<p>後來為了能夠客製化畫圖的效果，導入了 Shader，並且有不斷改良過。<br>目前最重要的有三個，分別是 vertex shaders, geometry shaders, pixel shaders<br>詳細介紹可以看 <a target="_blank" rel="noopener" href="https://cg2010studio.com/2011/06/30/geometry-shader/">https://cg2010studio.com/2011/06/30/geometry-shader/</a></p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/3DPipeline.png" class="" width="800" title="3DPipeline" alt="3DPipeline (from wiki)">
+
+<hr>
+<p>回歸重點，GPU 的運作方式就像你事先準備好所有模型，設定好位置光源材質等等，最後就開始跑繪圖管線，由於所有的模型都會經過一樣的流程，因此把所有運算方式都寫在 Shader (剛剛提到的座標轉換、投影等等)，<strong>直接用晶片每個計算單元針對每個點做平行運算</strong>，所以 Nvidia 的影片才會表達出所有 Pixel 會一起出來，像是蓋印章的感覺。</p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/cpugpucores.jpg" class="" width="400" title="cpugpu" alt="CPU &amp; GPU (from wiki)">
+
+<h2 id="可以編寫什麼語言去呼叫-Graphics-pipeline-？"><a href="#可以編寫什麼語言去呼叫-Graphics-pipeline-？" class="headerlink" title="可以編寫什麼語言去呼叫 Graphics pipeline ？"></a>可以編寫什麼語言去呼叫 Graphics pipeline ？</h2><p>我們直接來看遊戲引擎內支援的 Graphics pipeline 語言，下面以最平易近人的 unity 來看</p>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/GraphicsAPIs.html">https://docs.unity3d.com/Manual/GraphicsAPIs.html</a></p>
+<p>看來目前是支援以下三種</p>
+<ul>
+<li>DirectX：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/DirectX">https://en.wikipedia.org/wiki/DirectX</a><ul>
+<li>由微軟開發，從 1995 年發表，較完整且持續更新且強大的繪圖接口。</li>
+</ul>
+</li>
+<li>Metal：<a target="_blank" rel="noopener" href="https://developer.apple.com/metal/">https://developer.apple.com/metal/</a><ul>
+<li>由 Apple 開發，在 2014 年發表，獨佔在 MacOS/iOS 平台。</li>
+</ul>
+</li>
+<li>OpenGL Core：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/OpenGL">https://en.wikipedia.org/wiki/OpenGL</a><ul>
+<li>由 Khronos 開放組織在 1992 年發表的跨語言、跨平台的圖形接口，發展也較久遠。<br>後來有該組織在發表了另一套叫 Vulkan ( <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Vulkan">https://en.wikipedia.org/wiki/Vulkan</a> )<br>號稱低開銷、跨平台的圖形接口，有更高性能和平衡在於 CPU 和 GPU 的使用。</li>
+</ul>
+</li>
+</ul>
+<p>題外話：常常會與其他用於平行運算用的語言搞混</p>
+<ul>
+<li>OpenCL：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/OpenCL">https://zh.wikipedia.org/wiki/OpenCL</a><ul>
+<li>可使用CPU、GPU、DSP、FPGA或其他類型的處理器與硬體加速器去進行平行計算，一樣由 Khronos 管理。</li>
+</ul>
+</li>
+<li>CUDA：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/CUDA">https://zh.wikipedia.org/wiki/CUDA</a><ul>
+<li>由 NVIDIA 所推出的一種整合技術，稱為 GPGPU，利用 GUP 來計算原本由 CPU 處理的通用計算任務，這些通用計算任務通常與圖形處理沒有任何關係。</li>
+</ul>
+</li>
+</ul>
+<h2 id="來看看一個-OpenGL-的範例"><a href="#來看看一個-OpenGL-的範例" class="headerlink" title="來看看一個 OpenGL 的範例"></a>來看看一個 OpenGL 的範例</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.opengl-tutorial.org/beginners-tutorials/tutorial-2-the-first-triangle/">http://www.opengl-tutorial.org/beginners-tutorials/tutorial-2-the-first-triangle/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/opengl-tutorials/ogl/tree/master/tutorial02_red_triangle">https://github.com/opengl-tutorials/ogl/tree/master/tutorial02_red_triangle</a></li>
+</ul>
+<hr>
+<h2 id="如何畫出更真實的畫面？"><a href="#如何畫出更真實的畫面？" class="headerlink" title="如何畫出更真實的畫面？"></a>如何畫出更真實的畫面？</h2><p>前面提到的 Graphics pipeline 下的繪圖方式稱為 <strong>光柵化（ Rasterization）</strong>技術，雖然運算速率非常快速，這也是為什麼遊戲畫面可以 60 fps / 120 fps 的原因。</p>
+<p>有時候需要的是更真實更漂亮的畫面，所以發展出另一套的方式叫做 <strong>光線追蹤 ( Ray Tracing )。</strong><br>原理就是模擬光源照亮我們在現實世界裡看到的 3D 立體物體，光子會在物體間彈跳，然後再進入觀看者的眼睛。<br>某些物體可能會遮住光線而造成陰影，或者光線會從一個物體反射到另一個物體上，像是我們看到一個物體的影像反射在另一個物體的表面上。<br>還有折射，指光線穿過玻璃或水這些透明或半透明物體時發生變化的情況。</p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/screen1.jpg" class="" width="600" title="RTX" alt="RTX on &#x2F; off (from nvidia)">
+
+<p><a target="_blank" rel="noopener" href="https://blogs.nvidia.com.tw/2018/03/19/whats-difference-between-ray-tracing-rasterization/">https://blogs.nvidia.com.tw/2018/03/19/whats-difference-between-ray-tracing-rasterization/</a></p>
+<hr>
+<p>但實際上光線追蹤”<strong>理想的作法無法做到</strong>“，可以看下面影片得知，無法窮舉所有從光源出發的光線，折射反射等等，並且還會有大量的光線浪費。</p>
+<p>後來 Path Tracing 的方式簡化 Ray Tracing，它是基於 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%92%99%E5%9C%B0%E5%8D%A1%E7%BE%85%E6%96%B9%E6%B3%95">蒙地卡羅</a> 的方法 ( 運用統計和機率分佈的概念 )，從鏡頭出發對每個像素點做多次取樣，每次遇到平面則利用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bidirectional_scattering_distribution_function">BRDF / BTDF</a>，進行反射或折射<strong>單一光線</strong>，過程中會牽扯到很多物理數學運算，而取樣越多次或是 Tracing 的路徑越深就越真實。(<a target="_blank" rel="noopener" href="http://web.cs.wpi.edu/~emmanuel/courses/cs563/write_ups/zackw/realistic_raytracing.html">http://web.cs.wpi.edu/~emmanuel/courses/cs563/write_ups/zackw/realistic_raytracing.html</a>)</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/frLwRLS_ZR0" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<p>因此光線追蹤只是個精神，並沒有定義如何做到，市面上的遊戲宣稱用到光線追蹤，也是用各種優化方式簡化算法，在速度允許的情況下盡量不失真，還原大部分光源對環境的影響。</p>
+<p>也就是 <strong>光柵化 + 光線追蹤</strong></p>
+<h2 id="利用-99-行程式碼寫出-Path-Tracing"><a href="#利用-99-行程式碼寫出-Path-Tracing" class="headerlink" title="利用 99 行程式碼寫出 Path Tracing"></a>利用 99 行程式碼寫出 Path Tracing</h2><p>雖然畫面簡單，但仔細看一下畫面有非常細緻的間接照明、反射折射、和聚光的效果。<br><a target="_blank" rel="noopener" href="https://www.kevinbeason.com/smallpt/">https://www.kevinbeason.com/smallpt/</a></p>
+<img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/result640.jpg" class="" width="600" title="Path Tracing" alt="Path Tracing (from kevinbeason)">
+
+<h2 id="每一個遊戲引擎為了達到全域照明有各種不同算法和工具"><a href="#每一個遊戲引擎為了達到全域照明有各種不同算法和工具" class="headerlink" title="每一個遊戲引擎為了達到全域照明有各種不同算法和工具"></a>每一個遊戲引擎為了達到全域照明有各種不同算法和工具</h2><p>在真實世界中，所有的物體都會同時受到直接光線 (直接來自某個光源並照亮某個物體的光線粒子) 和間接光線 (來自某個光源、照射至某個物體後又反射至另一個物體，因此照亮該物體的光線粒子)的照射。「全域照明 (GI)」此一專有名詞，是指建構此效果模型的照明系統。若缺乏間接照明，場景會看起來粗糙和缺乏真實感，然而，直接接收的光線在計算上容易許多，間接照明的計算則極為複雜且運算負荷頗重。 - [<a target="_blank" rel="noopener" href="https://www.nvidia.com/zh-tw/geforce/technologies/vxgi/technology/">Link</a>]</p>
+<ul>
+<li>Unity - Light Mapping + Light Probes + Reflection Probes + Precomputed Lighting …<ul>
+<li>Enlighten Realtime Global Illumination</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/2021.2/Documentation/Manual/LightingOverview.html">https://docs.unity3d.com/2021.2/Documentation/Manual/LightingOverview.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=_E0JXOZDTKA">https://www.youtube.com/watch?v=_E0JXOZDTKA</a></li>
+</ul>
+</li>
+<li>Unreal Engine 5 - Lumen Dynamic Global Illumination<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/5.0/en-US/RenderingFeatures/Lumen/">https://docs.unrealengine.com/5.0/en-US/RenderingFeatures/Lumen/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=MzKARkLoRIc">https://www.youtube.com/watch?v=MzKARkLoRIc</a></li>
+</ul>
+</li>
+<li>Unreal Engine 4 / CryEngine 3  - Light Propagation Volumes<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/en-US/BuildingWorlds/LightingAndShadows/LightPropagationVolumes/">https://docs.unrealengine.com/4.27/en-US/BuildingWorlds/LightingAndShadows/LightPropagationVolumes/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vPQ3BbuYVh8">https://www.youtube.com/watch?v=vPQ3BbuYVh8</a></li>
+</ul>
+</li>
+</ul>
+
+        <div>
+          <hr>
+          <iframe width="100%" height="230px" scrolling="no" frameborder="0" id="player" src="https://button.like.co/in/embed/tim801217/button/?referrer=http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/" allowfullscreen="true"></iframe>
+        </div>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/" data-id="cky1wlvjf0009bqtt2shq6voy" data-title="淺談計算機圖學" class="article-share-link">Share</a>
+      
+        <a href="http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          淺談Scrum
+        
+      </div>
+    </a>
+  
+  
+    <a href="/pinkblog/pinkblog/2022/01/02/%E9%87%8D%E5%95%9F%E9%83%A8%E8%90%BD%E6%A0%BC%E7%9A%84%E6%B1%BA%E5%BF%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">重啟部落格的決心</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/">淺談Scrum</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/">淺談計算機圖學</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2022/01/02/%E9%87%8D%E5%95%9F%E9%83%A8%E8%90%BD%E6%A0%BC%E7%9A%84%E6%B1%BA%E5%BF%83/">重啟部落格的決心</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/02/16/Reflective-Shadow-Maps/">Reflective Shadow Maps</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/12/Hexo-%E5%B8%B8%E8%A6%8B%E5%95%8F%E9%A1%8C/">Hexo-常見問題</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/12/Hexo-%E5%85%B6%E4%BB%96%E5%8A%9F%E8%83%BD/">Hexo-其他功能</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/12/Git-%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4/">Git-基本指令</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/09/Hexo-%E4%BB%8B%E7%B4%B9%E8%88%87%E9%AB%94%E9%A9%97/">Hexo-介紹與體驗</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分類</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Computer-Graphics/">Computer Graphics</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Web-%E9%96%8B%E7%99%BC/">Web 開發</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Web-%E9%96%8B%E7%99%BC/Hexo/">Hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/">專案管理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/%E5%BF%83%E6%83%85%E8%A8%98%E4%BA%8B/">心情記事</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">彙整</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2015/01/">一月 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 pinkpika<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/pinkblog/" class="mobile-nav-link">home</a>
+  
+    <a href="/pinkblog/about" class="mobile-nav-link">about</a>
+  
+    <a href="/pinkblog/archives" class="mobile-nav-link">archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'pinkpikapinkblog';
+  
+  var disqus_url = 'http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.async = true;
+    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/pinkblog/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/pinkblog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/pinkblog/js/script.js"></script>
+
+
+
+
+
+  </div>
+  
+  
+<script id="dsq-count-scr" src="//pinkpikapinkblog.disqus.com/count.js" async></script>
+
+  
+</body>
+</html>

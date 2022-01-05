@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J63BRH65VP');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>淺談Scrum | Pink Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="正好歷經公司手機部門的擴增，與核心團隊一同製作很多教學和各種制度，方便新人可以快速上手，當然其中也有包含如何開發產品，當初公司主推 Scrum，不能只是會寫程式而已，因此這裡記錄了一下帶領新人的跑專案的心得。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淺談Scrum">
+<meta property="og:url" content="http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/index.html">
+<meta property="og:site_name" content="Pink Blog">
+<meta property="og:description" content="正好歷經公司手機部門的擴增，與核心團隊一同製作很多教學和各種制度，方便新人可以快速上手，當然其中也有包含如何開發產品，當初公司主推 Scrum，不能只是會寫程式而已，因此這裡記錄了一下帶領新人的跑專案的心得。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/agile.jpg">
+<meta property="article:published_time" content="2022-01-02T12:33:53.000Z">
+<meta property="article:modified_time" content="2022-01-02T13:34:59.606Z">
+<meta property="article:author" content="pinkpika">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/agile.jpg">
+  
+    <link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/pinkblog/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/pinkblog/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/pinkblog/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/pinkblog/" id="logo">Pink Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/pinkblog/">home</a>
+        
+          <a class="main-nav-link" href="/pinkblog/about">about</a>
+        
+          <a class="main-nav-link" href="/pinkblog/archives">archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <!--
+        
+          <a id="nav-rss-link" class="nav-icon" href="/pinkblog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜尋"></a>
+        -->
+        <a id="nav-twitter-btn" class="nav-icon" target="_blank" rel="noopener" href="https://twitter.com/pinkpika_coding" title="twitter"></a>
+        <a id="nav-github-btn" class="nav-icon" target="_blank" rel="noopener" href="https://github.com/pinkpika" title="github"></a>
+        <a id="nav-linkedin-btn" class="nav-icon" target="_blank" rel="noopener" href="https://www.linkedin.com/in/pink-pika-42907613a/" title="linkedin"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜尋"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://pinkpika.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-淺談Scrum" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/" class="article-date">
+  <time class="dt-published" datetime="2022-01-02T12:33:53.000Z" itemprop="datePublished">1月 2 2022</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/pinkblog/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/">專案管理</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      淺談Scrum
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>正好歷經公司手機部門的擴增，與核心團隊一同製作很多教學和各種制度，方便新人可以快速上手，<br>當然其中也有包含如何開發產品，當初公司主推 Scrum，不能只是會寫程式而已，<br>因此這裡記錄了一下帶領新人的跑專案的心得。</p>
+<span id="more"></span>
+
+<h3 id="在理解-Scrum-之前，先理解什麼是-Agile-敏捷軟體開發"><a href="#在理解-Scrum-之前，先理解什麼是-Agile-敏捷軟體開發" class="headerlink" title="在理解 Scrum 之前，先理解什麼是 Agile(敏捷軟體開發)?"></a>在理解 Scrum 之前，先理解什麼是 Agile(敏捷軟體開發)?</h3><ul>
+<li>Agile 述說的是一種精神或是哲學</li>
+<li>重點是”快速疊代”、”快速回饋”，詳細可以看 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%95%8F%E6%8D%B7%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91">敏捷軟體開發</a></li>
+<li>沒有回饋就沒有敏捷 !!!</li>
+</ul>
+<h3 id="Waterfall-vs-Agile"><a href="#Waterfall-vs-Agile" class="headerlink" title="Waterfall vs Agile"></a>Waterfall vs Agile</h3><img src="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/agile.jpg" class="" width="600" title="agile" alt="Waterfall vs Agile(from https:&#x2F;&#x2F;agiannakos.com&#x2F;en&#x2F;project-management&#x2F;)">
+
+<p>聽過一種說法：</p>
+<ul>
+<li>Waterfall = 按照完整計畫進行 =&gt; 給客戶合約上的東西</li>
+<li>Agile = 小增量、反覆運算、回饋 =&gt; 給客戶有價值的東西</li>
+</ul>
+<h3 id="什麼是-Scrum"><a href="#什麼是-Scrum" class="headerlink" title="什麼是 Scrum ?"></a>什麼是 Scrum ?</h3><p>其實 Scrum 是 Agile(敏捷軟體開發) 的其中之一種明確地實行方法，<br>由於 Agile 是一種精神，它沒有一定的執行方式，所以很多人幫它想出了很多明確地實行方式，<br>例如極限編程等等，而 Scrum 也是。</p>
+<h3 id="如何執行-Scrum"><a href="#如何執行-Scrum" class="headerlink" title="如何執行 Scrum ?"></a>如何執行 Scrum ?</h3><p>Scrum 有三個主要元素</p>
+<ul>
+<li>角色（roles）<ul>
+<li>Product Owner（PO，產品負責人）: 與開發團隊合作一起定義產品需求，負責產品成敗</li>
+<li>Scrum Master（SM，Scrum大師）: 協助團隊持續改善開發流程</li>
+<li>Developer（開發人員）: 跨職能團隊的開發軟體(包含工程師、PM、美術、行銷等等)</li>
+</ul>
+</li>
+<li>活動（activities）<ul>
+<li>Sprint：為期 2-4 週的開發活動</li>
+<li>Planning meeting: 在每個 sprint 開發活動的第一天，確認需求與開單</li>
+<li>Daily meeting: 每日會議</li>
+<li>Review meeting: 回饋會議</li>
+</ul>
+</li>
+<li>產出物（artifacts）<ul>
+<li>Epic、Feature、UserStory: 有記錄需求與驗收項目(藍單) </li>
+<li>Task: 工作項目(黃單)</li>
+<li>Burndown chart: 燃盡圖</li>
+</ul>
+</li>
+</ul>
+<h3 id="選擇工具"><a href="#選擇工具" class="headerlink" title="選擇工具"></a>選擇工具</h3><p>在使用 Scrum 跑專案時，一定會需要先選擇一項工具才行，用來記錄工單或是預估時間用的，<br>當初有使用過 Trello、Basecamp、TFS 等等，各有好壞沒有最好的，<br>選擇適合目前公司的工具，並且確實執行敏捷精神才對。</p>
+<hr>
+<h3 id="角色認知"><a href="#角色認知" class="headerlink" title="角色認知"></a>角色認知</h3><p>在一開始要訓練新人跑專案時，好奇自己到底是在做什麼樣的工作，後來查了一下有下方這幾類的人。</p>
+<ul>
+<li>公司內的團隊角色<ul>
+<li>Scrum Master: 所屬開發團隊的一員，帶領團隊跑 Scrum 流程、主持會議、解決團隊上的問題。</li>
+<li>Agile Coach: 意義上是跨團隊，指導每個團隊的 SM 都能正確實施敏捷開發，宣達開發的精神。</li>
+</ul>
+</li>
+<li>公司內的培訓師：依照 <a href="Scrum.org">Scrum.org</a> - SCRUM TRAINER 簡單分三類<ul>
+<li>Professional Scrum Master Trainer: 培訓 Scrum Master 的人</li>
+<li>Professional Scrum Product Owner Trainer: 培訓 Product Owner 的人</li>
+<li>Scrum for Software Development Trainer: 培訓使用 Scrum 軟體開發 的人 </li>
+</ul>
+</li>
+</ul>
+<p>所以當初我在訓練手機組新人時，較接近 <strong>Scrum for Software Development Trainer</strong> 這種定位</p>
+<hr>
+<h3 id="提倡精神"><a href="#提倡精神" class="headerlink" title="提倡精神"></a>提倡精神</h3><p>以下的精神有來自網路上的、有些是自身發生的感想。</p>
+<ul>
+<li>為什麼要跑敏捷？<ul>
+<li>程式的素養 -&gt; Building the thing right 做出好的產品(重點：速度和品質)</li>
+<li>敏捷的素養 -&gt; Building the right thing 做出正確的產品(重點：方向)</li>
+</ul>
+</li>
+<li>Scrum Teams 是跨職能（cross-functional）<ul>
+<li>成員們擁有在 Sprint 內創造價值所需的所有技能</li>
+<li>他們也是自我管理（self-managing）的，也就是說，他們在團隊內部決定誰做什麼、何時做以及如何做</li>
+</ul>
+</li>
+<li>沒有絕對的規則<ul>
+<li>一開始 Trainer 應該只教導基本的開單方式和帶領新人們執行 Planning, Daily, Review</li>
+<li>在每次的會議中詢問遇到的問題、想反饋的事項</li>
+<li>一些開單拉單方式的是由這個 Team 的所有成員們共同討論出的，所以每個 Team 有不同的規則是正常的，下專案也是</li>
+<li>例如：CodeReview 修正的單該如何開？新人無法在第一天就知道要修正的項目？臨時被亂入的事情該如何記錄？</li>
+</ul>
+</li>
+<li>沒有絕對的產品<ul>
+<li>Training 的需求書像是初版的規劃，當新人對 Training 需求有提出任何疑問時，應該保持開放態度</li>
+<li>不應該直接跟他說答案或規則，而是應改用提問的方式，問他為什麼會這樣想，然後再經過討論才得出結果</li>
+<li>就像 Scrum 精神一樣，不斷反饋且不斷修正，才會有更好的產品</li>
+<li>往往反饋更多的狀況下，Training的成果會更好</li>
+<li>例如：有新人反饋說登入頁輸入鍵盤起來時，是不是有可能擋到輸入框，應該要做輸入框上滑的動作</li>
+</ul>
+</li>
+<li>多多用團隊的力量解決問題<ul>
+<li>因為大家都是團隊的一份子，都應該為團隊”文化”和”產品”而努力</li>
+<li>當問題發生了，鼓勵大家提出想法和意見，進而討論結果，最後再化成行動</li>
+<li>例如：有新人開單遇到時間不準的問題，大家一起討論如何讓單開的更精準，並且下一期確實執行</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Agile 的本質是 “替用戶解決真正問題”，精神還是老話一句 “快速疊代”、”快速回饋”</p>
+</blockquote>
+<hr>
+<h3 id="關於-Scrum-的延伸讀物"><a href="#關於-Scrum-的延伸讀物" class="headerlink" title="關於 Scrum 的延伸讀物"></a>關於 Scrum 的延伸讀物</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Chinese-Traditional.pdf">Scrum 指南</a> (必讀)(Scrum之父寫的)</li>
+<li><a target="_blank" rel="noopener" href="https://www.books.com.tw/products/0010785434">SCRUM：用一半的時間做兩倍的事</a> (選讀)(Scrum之父寫的 - Jeff)</li>
+<li><a target="_blank" rel="noopener" href="https://www.books.com.tw/products/0010716911">Essential Scrum中文版：敏捷開發經典</a> (選讀)(超硬)</li>
+</ul>
+
+        <div>
+          <hr>
+          <iframe width="100%" height="230px" scrolling="no" frameborder="0" id="player" src="https://button.like.co/in/embed/tim801217/button/?referrer=http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/" allowfullscreen="true"></iframe>
+        </div>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/" data-id="cky1wlvje0008bqtt2t963ehr" data-title="淺談Scrum" class="article-share-link">Share</a>
+      
+        <a href="http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">淺談計算機圖學</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/">淺談Scrum</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/">淺談計算機圖學</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2022/01/02/%E9%87%8D%E5%95%9F%E9%83%A8%E8%90%BD%E6%A0%BC%E7%9A%84%E6%B1%BA%E5%BF%83/">重啟部落格的決心</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/02/16/Reflective-Shadow-Maps/">Reflective Shadow Maps</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/12/Hexo-%E5%B8%B8%E8%A6%8B%E5%95%8F%E9%A1%8C/">Hexo-常見問題</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/12/Hexo-%E5%85%B6%E4%BB%96%E5%8A%9F%E8%83%BD/">Hexo-其他功能</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/12/Git-%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4/">Git-基本指令</a>
+          </li>
+        
+          <li>
+            <a href="/pinkblog/pinkblog/2015/01/09/Hexo-%E4%BB%8B%E7%B4%B9%E8%88%87%E9%AB%94%E9%A9%97/">Hexo-介紹與體驗</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分類</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Computer-Graphics/">Computer Graphics</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Web-%E9%96%8B%E7%99%BC/">Web 開發</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Web-%E9%96%8B%E7%99%BC/Hexo/">Hexo</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/">專案管理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/%E5%BF%83%E6%83%85%E8%A8%98%E4%BA%8B/">心情記事</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">彙整</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2022/01/">一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2015/01/">一月 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 pinkpika<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/pinkblog/" class="mobile-nav-link">home</a>
+  
+    <a href="/pinkblog/about" class="mobile-nav-link">about</a>
+  
+    <a href="/pinkblog/archives" class="mobile-nav-link">archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'pinkpikapinkblog';
+  
+  var disqus_url = 'http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.async = true;
+    dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/pinkblog/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/pinkblog/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/pinkblog/js/script.js"></script>
+
+
+
+
+
+  </div>
+  
+  
+<script id="dsq-count-scr" src="//pinkpikapinkblog.disqus.com/count.js" async></script>
+
+  
+</body>
+</html>
