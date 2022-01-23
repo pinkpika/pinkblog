@@ -1,178 +1,184 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-J63BRH65VP');
-</script>
-<!-- End Google Analytics -->
-
-  
-  <title>iOS 模組化架構 (Modular Architecture in iOS) | Pink Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="當面對需求相同或相似的大量 App，例如公司的 40 隻 App 都需要登入功能，此時使用模組化開發是最適合的，可以大量減少工時，這裡記錄當初在研究模組化的發展歷程，可以了解以前發生的問題。">
+<!DOCTYPE html><html lang="zh-TW" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>iOS 模組化架構 (Modular Architecture in iOS) | Pink Blog</title><meta name="author" content="pinkpika,tim801217@gmail.com"><meta name="copyright" content="pinkpika"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="當面對需求相同或相似的大量 App，例如公司的 40 隻 App 都需要登入功能，此時使用模組化開發是最適合的，可以大量減少工時，這裡記錄當初在研究模組化的發展歷程，可以了解以前發生的問題。 這裡直接排除 複製程式碼的共用法，沒有用到實質上相同一份程式碼，就不太算是模組化。 [第一期]：Framework Project利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 模組化架構 (Modular Architecture in iOS)">
 <meta property="og:url" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/index.html">
 <meta property="og:site_name" content="Pink Blog">
-<meta property="og:description" content="當面對需求相同或相似的大量 App，例如公司的 40 隻 App 都需要登入功能，此時使用模組化開發是最適合的，可以大量減少工時，這裡記錄當初在研究模組化的發展歷程，可以了解以前發生的問題。">
+<meta property="og:description" content="當面對需求相同或相似的大量 App，例如公司的 40 隻 App 都需要登入功能，此時使用模組化開發是最適合的，可以大量減少工時，這裡記錄當初在研究模組化的發展歷程，可以了解以前發生的問題。 這裡直接排除 複製程式碼的共用法，沒有用到實質上相同一份程式碼，就不太算是模組化。 [第一期]：Framework Project利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-1.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-2.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-3.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-flow.png">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/2.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/2-flow.png">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-1.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-2.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-3.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-4.jpg">
-<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-flow.png">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/img/avatar.jpg">
 <meta property="article:published_time" content="2022-01-09T02:04:43.000Z">
-<meta property="article:modified_time" content="2022-01-18T06:46:14.879Z">
+<meta property="article:modified_time" content="2022-01-23T19:10:48.463Z">
 <meta property="article:author" content="pinkpika">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-1.jpg">
+<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/img/avatar.jpg"><link rel="shortcut icon" href="/pinkblog/img/avatar.jpg"><link rel="canonical" href="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/pinkblog/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-J63BRH65VP');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/pinkblog/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'iOS 模組化架構 (Modular Architecture in iOS)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '1月 24 2022 3:10:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
-    <link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
   
-  
-    <link rel="shortcut icon" href="/pinkblog/favicon.png">
-  
-  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/pinkblog/css/style.css">
-
-  
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-<link rel="stylesheet" href="/pinkblog/fancybox/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/pinkblog/" id="logo">Pink Blog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/pinkblog/" id="subtitle">學徒是軟體工藝中基本的部分，他們帶來的熱情會感染其他人一同學習。</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/pinkblog/">home</a>
-        
-          <a class="main-nav-link" href="/pinkblog/about">about</a>
-        
-          <a class="main-nav-link" href="/pinkblog/archives">archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        <!--
-        
-          <a id="nav-rss-link" class="nav-icon" href="/pinkblog/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜尋"></a>
-        -->
-        <a id="nav-twitter-btn" class="nav-icon" target="_blank" rel="noopener" href="https://twitter.com/pinkpika_coding" title="twitter"></a>
-        <a id="nav-github-btn" class="nav-icon" target="_blank" rel="noopener" href="https://github.com/pinkpika" title="github"></a>
-        <a id="nav-linkedin-btn" class="nav-icon" target="_blank" rel="noopener" href="https://www.linkedin.com/in/pink-pika-42907613a/" title="linkedin"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜尋"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://pinkpika.github.io/pinkblog"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-iOS-模組化架構-Modular-Architecture-in-iOS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/" class="article-date">
-  <time class="dt-published" datetime="2022-01-09T02:04:43.000Z" itemprop="datePublished">1月 9 2022</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/pinkblog/categories/iOS-%E9%96%8B%E7%99%BC/">iOS 開發</a>►<a class="article-category-link" href="/pinkblog/categories/iOS-%E9%96%8B%E7%99%BC/Modular-%E6%A8%A1%E7%B5%84%E5%8C%96/">Modular 模組化</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      iOS 模組化架構 (Modular Architecture in iOS)
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>當面對需求相同或相似的大量 App，例如公司的 40 隻 App 都需要登入功能，<br>此時使用模組化開發是最適合的，可以大量減少工時，<br>這裡記錄當初在研究模組化的發展歷程，可以了解以前發生的問題。</p>
-<span id="more"></span>
-
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/pinkblog/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">8</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: linear-gradient(20deg, #0062be, #925696, #cc426e, #fb0347)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/pinkblog/">Pink Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">iOS 模組化架構 (Modular Architecture in iOS)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2022-01-09T02:04:43.000Z" title="發表於 1月 9 2022 10:04:43">1月 9 2022</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2022-01-23T19:10:48.463Z" title="更新於 1月 24 2022 3:10:48">1月 24 2022</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/">iOS Development</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/Modular-%E6%A8%A1%E7%B5%84%E5%8C%96/">Modular 模組化</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="iOS 模組化架構 (Modular Architecture in iOS)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>當面對需求相同或相似的大量 App，例如公司的 40 隻 App 都需要登入功能，<br>此時使用模組化開發是最適合的，可以大量減少工時，<br>這裡記錄當初在研究模組化的發展歷程，可以了解以前發生的問題。</p>
 <p>這裡直接排除 <strong>複製程式碼的共用法</strong>，沒有用到實質上相同一份程式碼，就不太算是模組化。</p>
-<h2 id="第一期-：Framework-Project"><a href="#第一期-：Framework-Project" class="headerlink" title="[第一期]：Framework Project"></a>[第一期]：Framework Project</h2><ul>
-<li><h4 id="利用原生的方式建立-Framework，並且對它進行版控，他人可以使用或新增功能"><a href="#利用原生的方式建立-Framework，並且對它進行版控，他人可以使用或新增功能" class="headerlink" title="利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功能"></a>利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功能</h4></li>
-<li><h4 id="建立方式"><a href="#建立方式" class="headerlink" title="建立方式:"></a>建立方式:</h4><ol>
+<h1 id="第一期-：Framework-Project"><a href="#第一期-：Framework-Project" class="headerlink" title="[第一期]：Framework Project"></a>[第一期]：Framework Project</h1><h2 id="利用原生的方式建立-Framework，並且對它進行版控，他人可以使用或新增功能"><a href="#利用原生的方式建立-Framework，並且對它進行版控，他人可以使用或新增功能" class="headerlink" title="利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功能"></a>利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功能</h2><h2 id="建立方式"><a href="#建立方式" class="headerlink" title="建立方式"></a>建立方式</h2><ol>
 <li>建立一個 Framekwork 專案 ( 例如: TestFrameworkKit )</li>
 <li>內部建立任意程式碼，並確認可以編譯成功即可，<ul>
 <li>(記得使用 Git 進行版控，以確保每個成員使用的版本)</li>
 </ul>
 </li>
 </ol>
-<p>  <br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-1.jpg" class="" width="600"><br></p>
-</li>
-<li><h4 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式:"></a>使用方式:</h4><ol>
+<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-1.jpg" class="" width="600">
+
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><ol>
 <li>將 xcodeproj 拉進 App 專案</li>
 <li>設定專案的 Framework, Libraries, and Embedded Content，加入剛剛的 Framekwork</li>
 </ol>
-<p>  <br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-2.jpg" class="" width="600"><br></p>
+<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-2.jpg" class="" width="600">
+
 <ol start="3">
 <li>最後 import Framekwork 就可以使用</li>
 </ol>
-<p>  <br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-3.jpg" class="" width="600"><br></p>
-</li>
-<li><h4 id="開發方式"><a href="#開發方式" class="headerlink" title="開發方式:"></a>開發方式:</h4><p>  <br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-flow.png" class="" width="600"><br></p>
-</li>
-<li><h4 id="相關應用"><a href="#相關應用" class="headerlink" title="相關應用:"></a>相關應用:</h4><ul>
+<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-3.jpg" class="" width="600">
+
+<h2 id="開發方式"><a href="#開發方式" class="headerlink" title="開發方式"></a>開發方式</h2><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/1-flow.png" class="" width="600">
+
+<h2 id="相關應用"><a href="#相關應用" class="headerlink" title="相關應用"></a>相關應用</h2><ul>
 <li><a href="/pinkblog/2022/01/13/IBDesignable-%E5%92%8C-IBInspectable-%E7%9A%84%E5%8F%AF%E8%A6%96%E5%8C%96-View/" title="IBDesignable 和 IBInspectable 的可視化 View">IBDesignable 和 IBInspectable 的可視化 View</a></li>
 </ul>
-</li>
-</ul>
 <hr>
-<blockquote>
-<p>🤔 遇到問題: 模組無法使用三方(ex.FacebookSDK)，專案會發生編譯和 Link 的問題</p>
-</blockquote>
-<hr>
+<div class="note info flat"><p>🤔 遇到問題: 模組無法使用三方(ex.FacebookSDK)，專案會發生編譯和 Link 的問題</p>
+</div>
+
 <p>有以下兩種最常見的方式</p>
-<ul>
-<li><h4 id="Umbrella-Framework-的優缺"><a href="#Umbrella-Framework-的優缺" class="headerlink" title="Umbrella Framework 的優缺"></a>Umbrella Framework 的優缺</h4><ul>
+<h2 id="Umbrella-Framework-的優缺"><a href="#Umbrella-Framework-的優缺" class="headerlink" title="Umbrella Framework 的優缺"></a>Umbrella Framework 的優缺</h2><ul>
 <li>[優點]：<ol>
 <li>自由的加入各種 SourceCode 或已編譯 Framework</li>
 </ol>
@@ -189,8 +195,7 @@
 </ol>
 </li>
 </ul>
-</li>
-<li><h4 id="Cocoapods-Dependency-的優缺"><a href="#Cocoapods-Dependency-的優缺" class="headerlink" title="Cocoapods Dependency 的優缺"></a>Cocoapods Dependency 的優缺</h4><ul>
+<h2 id="Cocoapods-Dependency-的優缺"><a href="#Cocoapods-Dependency-的優缺" class="headerlink" title="Cocoapods Dependency 的優缺"></a>Cocoapods Dependency 的優缺</h2><ul>
 <li>[優點]：<ol>
 <li>自由的 dependency 官方 cocoapods 上的三方或是的 local podSpec。</li>
 <li>如果有 dependency 相同三方卻不同版本會有錯誤提示，不會有不同版本的錯誤！！！<ul>
@@ -205,37 +210,28 @@
 </ol>
 </li>
 </ul>
-</li>
-</ul>
 <hr>
-<h2 id="第二期-：Local-Podspec"><a href="#第二期-：Local-Podspec" class="headerlink" title="[第二期]：Local Podspec"></a>[第二期]：Local Podspec</h2><ul>
-<li><h4 id="利用-Local-Podspec-的方式建立-Framework，-一樣對它進行版控，他人可以使用或新增功能"><a href="#利用-Local-Podspec-的方式建立-Framework，-一樣對它進行版控，他人可以使用或新增功能" class="headerlink" title="利用 Local Podspec 的方式建立 Framework， 一樣對它進行版控，他人可以使用或新增功能"></a>利用 Local Podspec 的方式建立 Framework， 一樣對它進行版控，他人可以使用或新增功能</h4></li>
-<li><h4 id="建立方式-使用方式"><a href="#建立方式-使用方式" class="headerlink" title="建立方式+使用方式"></a>建立方式+使用方式</h4><ul>
-<li>因為步驟較長所以另外開一篇文章 =&gt; <a href="/pinkblog/2022/01/09/%E5%BB%BA%E7%AB%8B-Local-Podspec/" title="建立 Local Podspec">建立 Local Podspec</a><br><br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/2.jpg" class="" width="600"><br></li>
+<h1 id="第二期-：Local-Podspec"><a href="#第二期-：Local-Podspec" class="headerlink" title="[第二期]：Local Podspec"></a>[第二期]：Local Podspec</h1><h2 id="利用-Local-Podspec-的方式建立-Framework，-一樣對它進行版控，他人可以使用或新增功能"><a href="#利用-Local-Podspec-的方式建立-Framework，-一樣對它進行版控，他人可以使用或新增功能" class="headerlink" title="利用 Local Podspec 的方式建立 Framework， 一樣對它進行版控，他人可以使用或新增功能"></a>利用 Local Podspec 的方式建立 Framework， 一樣對它進行版控，他人可以使用或新增功能</h2><h2 id="建立方式-使用方式"><a href="#建立方式-使用方式" class="headerlink" title="建立方式+使用方式"></a>建立方式+使用方式</h2><ul>
+<li>因為步驟較長所以另外開一篇文章 =&gt; <a href="/pinkblog/2022/01/09/%E5%BB%BA%E7%AB%8B-Local-Podspec/" title="建立 Local Podspec">建立 Local Podspec</a><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/2.jpg" class="" width="600"></li>
 </ul>
-</li>
-<li><h4 id="開發方式-1"><a href="#開發方式-1" class="headerlink" title="開發方式:"></a>開發方式:</h4><p>  <br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/2-flow.png" class="" width="600"><br></p>
-</li>
-<li><h4 id="相關應用-1"><a href="#相關應用-1" class="headerlink" title="相關應用:"></a>相關應用:</h4><ul>
+<h2 id="開發方式-1"><a href="#開發方式-1" class="headerlink" title="開發方式"></a>開發方式</h2><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/2-flow.png" class="" width="600">
+
+<h2 id="相關應用-1"><a href="#相關應用-1" class="headerlink" title="相關應用"></a>相關應用</h2><ul>
 <li><a href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構">Podspec 調整資料夾結構</a></li>
 <li><a href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib">Podspec 內使用三方、Asset、Storyboard、Xib</a></li>
 </ul>
-</li>
-</ul>
 <hr>
-<blockquote>
-<p>🤔 遇到問題: 單一模組高度耦合，登入功能升版時，推播功能也必須升版，需要進行多模組的拆分</p>
-</blockquote>
+<div class="note info flat"><p>🤔 遇到問題: 單一模組高度耦合，登入功能升版時，推播功能也必須升版，需要進行多模組的拆分</p>
+</div>
+
 <hr>
-<h2 id="第三期-：Podspec-CocoaPods-Private-Specs"><a href="#第三期-：Podspec-CocoaPods-Private-Specs" class="headerlink" title="[第三期]：Podspec + CocoaPods Private Specs"></a>[第三期]：Podspec + CocoaPods Private Specs</h2><ul>
-<li><h4 id="建立-CocoaPods-Private-Specs，由它來管理所有內部三方"><a href="#建立-CocoaPods-Private-Specs，由它來管理所有內部三方" class="headerlink" title="建立 CocoaPods Private Specs，由它來管理所有內部三方"></a>建立 CocoaPods Private Specs，由它來管理所有內部三方</h4><p>  CocoaPods Specs 就是用來集中管理多個 Podspec 版本控制的 Repository，簡單來說就是一份三方清單<br>  最有名且公開的就是官方的 <a target="_blank" rel="noopener" href="https://github.com/CocoaPods/Specs">CocoaPodsSpecs</a><br>  你當然可以建立自己的三方清單，例如 <a target="_blank" rel="noopener" href="https://github.com/pinkpika/PinkPodsSpecs">PinkPodsSpecs</a><br>  用 Specs 指定想要的三方 Podspec，不用自己下載、不用指定位置，就像使用外部三方一樣方便！</p>
-<p>  只要有 Git 就可開發 CocoaPods Specs</p>
+<h1 id="第三期-：Podspec-CocoaPods-Private-Specs"><a href="#第三期-：Podspec-CocoaPods-Private-Specs" class="headerlink" title="[第三期]：Podspec + CocoaPods Private Specs"></a>[第三期]：Podspec + CocoaPods Private Specs</h1><h2 id="建立-CocoaPods-Private-Specs，由它來管理所有內部三方"><a href="#建立-CocoaPods-Private-Specs，由它來管理所有內部三方" class="headerlink" title="建立 CocoaPods Private Specs，由它來管理所有內部三方"></a>建立 CocoaPods Private Specs，由它來管理所有內部三方</h2><p>CocoaPods Specs 就是用來集中管理多個 Podspec 版本控制的 Repository，簡單來說就是一份三方清單<br>最有名且公開的就是官方的 <a target="_blank" rel="noopener" href="https://github.com/CocoaPods/Specs">CocoaPodsSpecs</a><br>你當然可以建立自己的三方清單，例如 <a target="_blank" rel="noopener" href="https://github.com/pinkpika/PinkPodsSpecs">PinkPodsSpecs</a><br>用 Specs 指定想要的三方 Podspec，不用自己下載、不用指定位置，就像使用外部三方一樣方便！</p>
+<p>只要有 Git 就可開發 CocoaPods Specs</p>
 <ul>
 <li>如果使用公開 GitHub，就是公開的三方清單</li>
 <li>如果使用私有 GitHub 或是公司內部 GitLab，就是私有內部的三方清單 ( 通常公司內部都需要這種的 )</li>
 </ul>
-</li>
-<li><h4 id="建立方式-1"><a href="#建立方式-1" class="headerlink" title="建立方式"></a>建立方式</h4><ol>
+<h2 id="建立方式-1"><a href="#建立方式-1" class="headerlink" title="建立方式"></a>建立方式</h2><ol>
 <li><p>先決定好是否要公開清單，並決定好在哪裡建立 ( 這裡示範使用公開 GitHub )</p>
 </li>
 <li><p>先建立一個公開 Repo，叫做 <a target="_blank" rel="noopener" href="https://github.com/pinkpika/PinkPodsSpecs">PinkPodsSpecs</a></p>
@@ -252,16 +248,15 @@
 </ul>
 </li>
 <li><p>將 <code>TestPodFramework</code> 上傳 push 程式碼到 GitHub，並且打上 tag 為目前的版號，例如’0.1.0’</p>
-<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-1.jpg" class="" width="600"><br></li>
+<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-1.jpg" class="" width="600"></li>
 <li><p>在終端機執行下面指令，下載三方清單</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo add PinkPodsSpecs git@github.com:pinkpika/PinkPodsSpecs.git</span><br></pre></td></tr></table></figure></li>
 <li><p>在 <code>TestPodFramework</code> 資料夾目錄執行下面指令，驗證程式碼並且發版加入三方清單</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo push PinkPodsSpecs TestPodFramework.podspec --allow-warnings --verbose</span><br></pre></td></tr></table></figure></li>
 <li><p>如果看到 <a target="_blank" rel="noopener" href="https://github.com/pinkpika/PinkPodsSpecs">PinkPodsSpecs</a> 內有 <code>TestPodFramework</code> 就算成功！</p>
-<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-2.jpg" class="" width="600"><br></li>
+<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-2.jpg" class="" width="600"></li>
 </ol>
-</li>
-<li><h4 id="使用方式-1"><a href="#使用方式-1" class="headerlink" title="使用方式"></a>使用方式</h4><ul>
+<h2 id="使用方式-1"><a href="#使用方式-1" class="headerlink" title="使用方式"></a>使用方式</h2><ul>
 <li><p>使用三方清單前的 PodFile：</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pod <span class="string">&#x27;TestPodFramework&#x27;</span>, <span class="symbol">:path</span> =&gt; <span class="string">&#x27;../TestPodFramework&#x27;</span> (第一種)</span><br><span class="line">pod <span class="string">&#x27;Charts&#x27;</span>, <span class="symbol">:git</span> =&gt; <span class="string">&#x27;git@github.com:danielgindi/Charts.git&#x27;</span> (第二種)</span><br></pre></td></tr></table></figure></li>
 <li><p>使用三方清單後的 PodFile：</p>
@@ -269,20 +264,21 @@
 <li><p>本機使用者的隱藏資料夾，有”兩個很重要的資料夾”</p>
 <ul>
 <li><strong>三方清單</strong> 的快取資料夾 <ul>
-<li>也就是清單的 Local 快取(有問題可以刪掉再載)<br><br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-3.jpg" class="" width="800"><br></li>
+<li>也就是清單的 Local 快取(有問題可以刪掉再載)<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-3.jpg" class="" width="800"></li>
 </ul>
 </li>
 <li><strong>三方程式碼</strong> 的快取資料夾<ul>
-<li>也就是程式碼的 Local 快取(也因為他們所以下載過的三方再次下載會特別快)<br><br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-4.jpg" class="" width="800"><br></li>
+<li>也就是程式碼的 Local 快取(也因為他們所以下載過的三方再次下載會特別快)<img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-4.jpg" class="" width="800"></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-<li><h4 id="開發方式-2"><a href="#開發方式-2" class="headerlink" title="開發方式:"></a>開發方式:</h4><p>  <br><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-flow.png" class="" width="600"><br></p>
+<h2 id="開發方式-2"><a href="#開發方式-2" class="headerlink" title="開發方式"></a>開發方式</h2><img src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/3-flow.png" class="" width="600">
+
 <ul>
-<li>Author要做的事：<ol>
+<li><p>Author要做的事：</p>
+<ol>
 <li><strong>Push Code：上傳模組程式碼</strong><ul>
 <li>1 確認模組 repo 最新的 Master 就是你要發佈的程式碼版本 </li>
 <li>2 確認模組 repo 最新的 Master 的 podspec 檔的版本號是你要的新版號 <code>s.version = &quot;1.3.0&quot;</code></li>
@@ -304,7 +300,8 @@
 </li>
 </ol>
 </li>
-<li>Member要做的事：<ol start="3">
+<li><p>Member要做的事：</p>
+<ol start="3">
 <li><strong>Add or Update PinkPodsSpecs:更新模組清單</strong><ul>
 <li>第一次使用，請直接下載 PinkPodsSpecs<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo add PinkPodsSpecs git@github.com:pinkpika/PinkPodsSpecs.git</span><br></pre></td></tr></table></figure></li>
 <li>如果下載過，未來只要更新版本清單即可<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo update PinkPodsSpecs</span><br></pre></td></tr></table></figure></li>
@@ -320,178 +317,57 @@
 </ol>
 </li>
 </ul>
-</li>
-</ul>
 <hr>
-<blockquote>
-<p>🤔 遇到問題: 如何額外打包模組，不讓使用者知道內部的實作方式呢</p>
-</blockquote>
+<div class="note info flat"><p>🤔 遇到問題: 如何額外打包模組，不讓使用者知道內部的實作方式呢</p>
+</div>
+
 <hr>
-<h2 id="第四期-：Podspec-CocoaPods-Private-Specs-Carthage"><a href="#第四期-：Podspec-CocoaPods-Private-Specs-Carthage" class="headerlink" title="[第四期]：Podspec + CocoaPods Private Specs + Carthage"></a>[第四期]：Podspec + CocoaPods Private Specs + Carthage</h2><ul>
-<li><h4 id="利用-Carthage-封裝打包各個模組，安全的提供給外包或是合作廠商"><a href="#利用-Carthage-封裝打包各個模組，安全的提供給外包或是合作廠商" class="headerlink" title="利用 Carthage 封裝打包各個模組，安全的提供給外包或是合作廠商"></a>利用 Carthage 封裝打包各個模組，安全的提供給外包或是合作廠商</h4></li>
-<li><h4 id="相關應用-未來會補文章"><a href="#相關應用-未來會補文章" class="headerlink" title="相關應用(未來會補文章):"></a>相關應用(未來會補文章):</h4><ul>
+<h1 id="第四期-：Podspec-CocoaPods-Private-Specs-Carthage"><a href="#第四期-：Podspec-CocoaPods-Private-Specs-Carthage" class="headerlink" title="[第四期]：Podspec + CocoaPods Private Specs + Carthage"></a>[第四期]：Podspec + CocoaPods Private Specs + Carthage</h1><h2 id="利用-Carthage-封裝打包各個模組，安全的提供給外包或是合作廠商"><a href="#利用-Carthage-封裝打包各個模組，安全的提供給外包或是合作廠商" class="headerlink" title="利用 Carthage 封裝打包各個模組，安全的提供給外包或是合作廠商"></a>利用 Carthage 封裝打包各個模組，安全的提供給外包或是合作廠商</h2><h2 id="相關應用-未來會補文章"><a href="#相關應用-未來會補文章" class="headerlink" title="相關應用(未來會補文章):"></a>相關應用(未來會補文章):</h2><ul>
 <li>使用 Carthage 打包模組的經驗紀錄</li>
 </ul>
-</li>
-</ul>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"></div></div><iframe width="100%" height="230px" scrolling="no" frameborder="0" src="https://button.like.co/in/embed/tim801217/button/?referrer=&lt;%- post.permalink %&gt;"></iframe><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pinkblog/2022/01/09/%E5%BB%BA%E7%AB%8B-Local-Podspec/"><img class="prev-cover" src="/pinkblog/linear-gradient(20deg,%20#0062be,%20#925696,%20#cc426e,%20#fb0347)" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">建立 Local Podspec</div></div></a></div><div class="next-post pull-right"><a href="/pinkblog/2022/01/09/Hexo-GA-SEO-Liker/"><img class="next-cover" src="/pinkblog/linear-gradient(20deg,%20#0062be,%20#925696,%20#cc426e,%20#fb0347)" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hexo-GA+SEO+Liker</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/pinkblog/img/avatar.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">pinkpika</div><div class="author-info__description">Simplicity is the soul of efficiency.</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/pinkpika" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://twitter.com/pinkpika_coding" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.linkedin.com/in/pink-pika-42907613a/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a><a class="social-icon" href="mailto:tim801217@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">最近換了一個新主題 Butterfly，畫面優美有支援深淺模式，附帶的功能也很多。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%9C%9F-%EF%BC%9AFramework-Project"><span class="toc-number">1.</span> <span class="toc-text">[第一期]：Framework Project</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E5%8E%9F%E7%94%9F%E7%9A%84%E6%96%B9%E5%BC%8F%E5%BB%BA%E7%AB%8B-Framework%EF%BC%8C%E4%B8%A6%E4%B8%94%E5%B0%8D%E5%AE%83%E9%80%B2%E8%A1%8C%E7%89%88%E6%8E%A7%EF%BC%8C%E4%BB%96%E4%BA%BA%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E6%88%96%E6%96%B0%E5%A2%9E%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.</span> <span class="toc-text">利用原生的方式建立 Framework，並且對它進行版控，他人可以使用或新增功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">建立方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">使用方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%96%8B%E7%99%BC%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.</span> <span class="toc-text">開發方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E9%97%9C%E6%87%89%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">相關應用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Umbrella-Framework-%E7%9A%84%E5%84%AA%E7%BC%BA"><span class="toc-number">1.6.</span> <span class="toc-text">Umbrella Framework 的優缺</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cocoapods-Dependency-%E7%9A%84%E5%84%AA%E7%BC%BA"><span class="toc-number">1.7.</span> <span class="toc-text">Cocoapods Dependency 的優缺</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%9C%9F-%EF%BC%9ALocal-Podspec"><span class="toc-number">2.</span> <span class="toc-text">[第二期]：Local Podspec</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Local-Podspec-%E7%9A%84%E6%96%B9%E5%BC%8F%E5%BB%BA%E7%AB%8B-Framework%EF%BC%8C-%E4%B8%80%E6%A8%A3%E5%B0%8D%E5%AE%83%E9%80%B2%E8%A1%8C%E7%89%88%E6%8E%A7%EF%BC%8C%E4%BB%96%E4%BA%BA%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E6%88%96%E6%96%B0%E5%A2%9E%E5%8A%9F%E8%83%BD"><span class="toc-number">2.1.</span> <span class="toc-text">利用 Local Podspec 的方式建立 Framework， 一樣對它進行版控，他人可以使用或新增功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E5%BC%8F-%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">建立方式+使用方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%96%8B%E7%99%BC%E6%96%B9%E5%BC%8F-1"><span class="toc-number">2.3.</span> <span class="toc-text">開發方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E9%97%9C%E6%87%89%E7%94%A8-1"><span class="toc-number">2.4.</span> <span class="toc-text">相關應用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%9C%9F-%EF%BC%9APodspec-CocoaPods-Private-Specs"><span class="toc-number">3.</span> <span class="toc-text">[第三期]：Podspec + CocoaPods Private Specs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-CocoaPods-Private-Specs%EF%BC%8C%E7%94%B1%E5%AE%83%E4%BE%86%E7%AE%A1%E7%90%86%E6%89%80%E6%9C%89%E5%85%A7%E9%83%A8%E4%B8%89%E6%96%B9"><span class="toc-number">3.1.</span> <span class="toc-text">建立 CocoaPods Private Specs，由它來管理所有內部三方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E5%BC%8F-1"><span class="toc-number">3.2.</span> <span class="toc-text">建立方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F-1"><span class="toc-number">3.3.</span> <span class="toc-text">使用方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%96%8B%E7%99%BC%E6%96%B9%E5%BC%8F-2"><span class="toc-number">3.4.</span> <span class="toc-text">開發方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%9C%9F-%EF%BC%9APodspec-CocoaPods-Private-Specs-Carthage"><span class="toc-number">4.</span> <span class="toc-text">[第四期]：Podspec + CocoaPods Private Specs + Carthage</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Carthage-%E5%B0%81%E8%A3%9D%E6%89%93%E5%8C%85%E5%90%84%E5%80%8B%E6%A8%A1%E7%B5%84%EF%BC%8C%E5%AE%89%E5%85%A8%E7%9A%84%E6%8F%90%E4%BE%9B%E7%B5%A6%E5%A4%96%E5%8C%85%E6%88%96%E6%98%AF%E5%90%88%E4%BD%9C%E5%BB%A0%E5%95%86"><span class="toc-number">4.1.</span> <span class="toc-text">利用 Carthage 封裝打包各個模組，安全的提供給外包或是合作廠商</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E9%97%9C%E6%87%89%E7%94%A8-%E6%9C%AA%E4%BE%86%E6%9C%83%E8%A3%9C%E6%96%87%E7%AB%A0"><span class="toc-number">4.2.</span> <span class="toc-text">相關應用(未來會補文章):</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/" title="Hexo-RSS+Sitemap設定"><img src="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/cover.png" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Hexo-RSS+Sitemap設定"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/" title="Hexo-RSS+Sitemap設定">Hexo-RSS+Sitemap設定</a><time datetime="2022-01-23T05:33:15.000Z" title="發表於 1月 23 2022 13:33:15">1月 23 2022</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib">Podspec 內使用三方、Asset、Storyboard、Xib</a><time datetime="2022-01-16T02:39:14.000Z" title="發表於 1月 16 2022 10:39:14">1月 16 2022</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構">Podspec 調整資料夾結構</a><time datetime="2022-01-16T02:38:53.000Z" title="發表於 1月 16 2022 10:38:53">1月 16 2022</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/pinkblog/2022/01/13/IBDesignable-%E5%92%8C-IBInspectable-%E7%9A%84%E5%8F%AF%E8%A6%96%E5%8C%96-View/" title="IBDesignable 和 IBInspectable 的可視化 View">IBDesignable 和 IBInspectable 的可視化 View</a><time datetime="2022-01-13T05:17:09.000Z" title="發表於 1月 13 2022 13:17:09">1月 13 2022</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/pinkblog/2022/01/09/%E5%BB%BA%E7%AB%8B-Local-Podspec/" title="建立 Local Podspec">建立 Local Podspec</a><time datetime="2022-01-09T06:30:25.000Z" title="發表於 1月 9 2022 14:30:25">1月 9 2022</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By pinkpika</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/pinkblog/js/utils.js"></script><script src="/pinkblog/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
 
-        <div>
-          <hr>
-          <iframe width="100%" height="230px" scrolling="no" frameborder="0" id="player" src="https://button.like.co/in/embed/tim801217/button/?referrer=http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/" allowfullscreen="true"></iframe>
-        </div>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://pinkpika.github.io/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/" data-id="ckyjr6ee0000g72ttbxxq68d0" data-title="iOS 模組化架構 (Modular Architecture in iOS)" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/pinkblog/2022/01/09/%E5%BB%BA%E7%AB%8B-Local-Podspec/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          建立 Local Podspec
-        
-      </div>
-    </a>
-  
-  
-    <a href="/pinkblog/2022/01/09/Hexo-GA-SEO-Liker/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hexo-GA+SEO+Liker</div>
-    </a>
-  
-</nav>
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'pinkpika/pinkblog_giscus',
+    'data-repo-id': 'R_kgDOGuAMCw',
+    'data-category-id': 'DIC_kwDOGuAMC84CAzt2',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
 
-  
-</article>
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
 
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/">Podspec 內使用三方、Asset、Storyboard、Xib</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/">Podspec 調整資料夾結構</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/13/IBDesignable-%E5%92%8C-IBInspectable-%E7%9A%84%E5%8F%AF%E8%A6%96%E5%8C%96-View/">IBDesignable 和 IBInspectable 的可視化 View</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/09/%E5%BB%BA%E7%AB%8B-Local-Podspec/">建立 Local Podspec</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS/">iOS 模組化架構 (Modular Architecture in iOS)</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/09/Hexo-GA-SEO-Liker/">Hexo-GA+SEO+Liker</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/09/Hexo-%E7%95%99%E8%A8%80%E6%9D%BF%E5%8A%9F%E8%83%BD/">Hexo-留言板功能</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/">淺談Scrum</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/">淺談計算機圖學</a>
-          </li>
-        
-          <li>
-            <a href="/pinkblog/2022/01/02/%E9%87%8D%E5%95%9F%E9%83%A8%E8%90%BD%E6%A0%BC%E7%9A%84%E6%B1%BA%E5%BF%83/">重啟部落格的決心</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分類</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Computer-Graphics/">Computer Graphics</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Web-%E9%96%8B%E7%99%BC/">Web 開發</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/Web-%E9%96%8B%E7%99%BC/Hexo/">Hexo</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/iOS-%E9%96%8B%E7%99%BC/">iOS 開發</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/iOS-%E9%96%8B%E7%99%BC/Modular-%E6%A8%A1%E7%B5%84%E5%8C%96/">Modular 模組化</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/">專案管理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/pinkblog/categories/%E5%BF%83%E6%83%85%E8%A8%98%E4%BA%8B/">心情記事</a><span class="category-list-count">1</span></li></ul>
-    </div>
-  </div>
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">彙整</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2022/01/">一月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/pinkblog/archives/2015/01/">一月 2015</a><span class="archive-list-count">4</span></li></ul>
-    </div>
-  </div>
-
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 pinkpika<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/pinkblog/" class="mobile-nav-link">home</a>
-  
-    <a href="/pinkblog/about" class="mobile-nav-link">about</a>
-  
-    <a href="/pinkblog/archives" class="mobile-nav-link">archives</a>
-  
-</nav>
-    
-
-
-<script src="/pinkblog/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/pinkblog/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/pinkblog/js/script.js"></script>
-
-
-
-
-
-  </div>
-  
-</body>
-</html>
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
