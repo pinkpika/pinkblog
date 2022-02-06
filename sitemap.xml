@@ -2,6 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://pinkpika.github.io/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/2022/01/02/%E9%87%8D%E5%95%9F%E9%83%A8%E8%90%BD%E6%A0%BC%E7%9A%84%E6%B1%BA%E5%BF%83/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/2015/02/16/Reflective-Shadow-Maps/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/2015/01/12/Hexo-%E6%96%87%E7%AB%A0%E5%8A%9F%E8%83%BD/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/</loc>
+    
+    <lastmod>2022-02-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://pinkpika.github.io/pinkblog/song/index.html</loc>
     
     <lastmod>2022-02-05</lastmod>
@@ -101,33 +164,6 @@
   </url>
   
   <url>
-    <loc>http://pinkpika.github.io/pinkblog/2022/01/02/%E9%87%8D%E5%95%9F%E9%83%A8%E8%90%BD%E6%A0%BC%E7%9A%84%E6%B1%BA%E5%BF%83/</loc>
-    
-    <lastmod>2022-01-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://pinkpika.github.io/pinkblog/2015/02/16/Reflective-Shadow-Maps/</loc>
-    
-    <lastmod>2022-01-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://pinkpika.github.io/pinkblog/2015/01/12/Hexo-%E6%96%87%E7%AB%A0%E5%8A%9F%E8%83%BD/</loc>
-    
-    <lastmod>2022-01-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://pinkpika.github.io/pinkblog/2015/01/12/Hexo-%E5%B8%B8%E8%A6%8B%E5%95%8F%E9%A1%8C/</loc>
     
     <lastmod>2022-01-30</lastmod>
@@ -137,25 +173,7 @@
   </url>
   
   <url>
-    <loc>http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87Scrum/</loc>
-    
-    <lastmod>2022-01-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://pinkpika.github.io/pinkblog/2015/01/09/Hexo-%E4%BB%8B%E7%B4%B9%E8%88%87%E9%AB%94%E9%A9%97/</loc>
-    
-    <lastmod>2022-01-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://pinkpika.github.io/pinkblog/2022/01/02/%E6%B7%BA%E8%AB%87%E8%A8%88%E7%AE%97%E6%A9%9F%E5%9C%96%E5%AD%B8/</loc>
     
     <lastmod>2022-01-30</lastmod>
     
@@ -202,7 +220,7 @@
 
   <url>
     <loc>http://pinkpika.github.io/pinkblog</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -212,70 +230,77 @@
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/Web-Development/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/Git/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/Web-Development/Hexo/</loc>
-    <lastmod>2022-02-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://pinkpika.github.io/pinkblog/categories/Computer-Graphics/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/categories/Computer-Graphics/</loc>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/%E5%BF%83%E6%83%85%E8%A8%98%E4%BA%8B/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/iOS-Development/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/iOS-Development/Modular-%E6%A8%A1%E7%B5%84%E5%8C%96/</loc>
-    <lastmod>2022-02-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://pinkpika.github.io/pinkblog/categories/iOS-Development/Multithreading/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://pinkpika.github.io/pinkblog/categories/iOS-Development/CodingStyle/</loc>
-    <lastmod>2022-02-05</lastmod>
+    <lastmod>2022-02-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/categories/iOS-Development/Multithreading/</loc>
+    <lastmod>2022-02-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://pinkpika.github.io/pinkblog/categories/iOS-Development/Testing/</loc>
+    <lastmod>2022-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

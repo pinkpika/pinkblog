@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>XCTest 和 Unit Testing Bundle | Pink Blog</title><meta name="author" content="pinkpika,tim801217@gmail.com"><meta name="copyright" content="pinkpika"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="開始寫測試前必須先瞭解該平台用來寫測試的套件或框架，例如 C# 的 MSTest、Java 的 JUnit、JavaScript 的 JsUnit，想當然在 iOS 平台上也有專屬的測試框架。 XCTestXCTest 是 Apple 官方出測試框架，可以用來建立 Unit Testing、Performance Testing、UI Testing。  xctest 官方文件  Unit Tes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XCTest 和 Unit Testing Bundle">
+<meta property="og:url" content="http://pinkpika.github.io/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/index.html">
+<meta property="og:site_name" content="Pink Blog">
+<meta property="og:description" content="開始寫測試前必須先瞭解該平台用來寫測試的套件或框架，例如 C# 的 MSTest、Java 的 JUnit、JavaScript 的 JsUnit，想當然在 iOS 平台上也有專屬的測試框架。 XCTestXCTest 是 Apple 官方出測試框架，可以用來建立 Unit Testing、Performance Testing、UI Testing。  xctest 官方文件  Unit Tes">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/unsplash_d9ILr-dbEdg.jpg">
+<meta property="article:published_time" content="2022-02-06T08:15:10.000Z">
+<meta property="article:modified_time" content="2022-02-06T18:24:45.118Z">
+<meta property="article:author" content="pinkpika">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/unsplash_d9ILr-dbEdg.jpg"><link rel="shortcut icon" href="/pinkblog/"><link rel="canonical" href="http://pinkpika.github.io/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/pinkblog/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-J63BRH65VP');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/pinkblog/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'XCTest 和 Unit Testing Bundle',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2月 7 2022 2:24:45'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/pinkblog/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">19</div></a></div><div class="data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">11</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/song/"><i class="fa-fw fas fa-music"></i><span> Song</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/unsplash_d9ILr-dbEdg.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/pinkblog/">Pink Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/song/"><i class="fa-fw fas fa-music"></i><span> Song</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">XCTest 和 Unit Testing Bundle</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2022-02-06T08:15:10.000Z" title="發表於 2月 6 2022 16:15:10">2月 6 2022</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2022-02-06T18:24:45.118Z" title="更新於 2月 7 2022 2:24:45">2月 7 2022</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/">iOS Development</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/Testing/">Testing</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="XCTest 和 Unit Testing Bundle"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>開始寫測試前必須先瞭解該平台用來寫測試的套件或框架，<br>例如 C# 的 MSTest、Java 的 JUnit、JavaScript 的 JsUnit，<br>想當然在 iOS 平台上也有專屬的測試框架。</p>
+<h1 id="XCTest"><a href="#XCTest" class="headerlink" title="XCTest"></a>XCTest</h1><p>XCTest 是 Apple 官方出測試框架，可以用來建立 Unit Testing、Performance Testing、UI Testing。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/xctest">xctest 官方文件</a></li>
+</ul>
+<h1 id="Unit-Testing-Bundle"><a href="#Unit-Testing-Bundle" class="headerlink" title="Unit Testing Bundle"></a>Unit Testing Bundle</h1><p>Unit Testing Bundle 則是 Xcode 內建用來做單元測試的 Target。</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><ol>
+<li><p>新增 Target &gt; iOS Unit Testing Bundle (在建立專案時其實也可以直接勾選 Include Tests)</p>
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/1.png" class="" width="600"></li>
+<li><p>命名 Target 名稱 &gt; 完成安裝</p>
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/2.png" class="" width="600"></li>
+<li><p>通常需要測試的物件都在專案裡，所以 <code>TestAppTests.swift</code> 需要在最上面加上 <code>@testable import TestApp</code></p>
+</li>
+<li><p>也可以自行新增測試檔案進行分類，建議是一個類別對一個測試檔案，不要把所有類別的測試都寫在同一個檔案</p>
+</li>
+</ol>
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/5.png" class="" width="800">
+
+<h2 id="撰寫測試"><a href="#撰寫測試" class="headerlink" title="撰寫測試"></a>撰寫測試</h2><h3 id="Setup-和-Teardown"><a href="#Setup-和-Teardown" class="headerlink" title="Setup 和 Teardown"></a>Setup 和 Teardown</h3><ul>
+<li>SetUp：在測試執行前做一些初始化的設定。</li>
+<li>TearDown：測試結束後，在這裡清除資料或設定，確保不會留下任何可能影響後續測試的東西。</li>
+</ul>
+<p>目前官方有提供很多種進階用法 <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/xctest/xctestcase/set_up_and_tear_down_state_in_your_tests">Set Up and Tear Down State in Your Tests</a><br>例如初始化就有不同的方式，或是提供 <code>addTeardownBlock</code> 來定義特定測試的 TearDown。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUp</span>()</span> <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="comment">// 非同步執行初始化設定，並且可以 throws error</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUpWithError</span>()</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="comment">// 同步執行初始化設定，並且可以 throws error</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">setUp</span>()</span> &#123;</span><br><span class="line">    <span class="comment">// 同步執行初始化設定</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="XCTAssert"><a href="#XCTAssert" class="headerlink" title="XCTAssert"></a>XCTAssert</h3><p>用來驗證結果是否如預期，有很多種判斷方式。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> result <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> data <span class="operator">=</span> <span class="number">100</span></span><br><span class="line"><span class="keyword">let</span> object: <span class="type">Date</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="comment">// 判斷是否為True</span></span><br><span class="line"><span class="type">XCTAssert</span>(result)</span><br><span class="line"><span class="comment">// 判斷是否為false</span></span><br><span class="line"><span class="type">XCTAssertFalse</span>(result)</span><br><span class="line"><span class="comment">// 判斷是否相同</span></span><br><span class="line"><span class="type">XCTAssertEqual</span>(data, <span class="number">100</span>)</span><br><span class="line"><span class="comment">// 判斷是否不相同</span></span><br><span class="line"><span class="type">XCTAssertNotEqual</span>(data, <span class="number">0</span>)</span><br><span class="line"><span class="comment">// 判斷是否為空</span></span><br><span class="line"><span class="type">XCTAssertNil</span>(object)</span><br><span class="line"><span class="comment">// 判斷是否不為空</span></span><br><span class="line"><span class="type">XCTAssertNotNil</span>(object)</span><br><span class="line"><span class="comment">// 無條件失敗</span></span><br><span class="line"><span class="type">XCTFail</span>()</span><br></pre></td></tr></table></figure>
+
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/3.png" class="" width="600">
+
+<h3 id="執行方式"><a href="#執行方式" class="headerlink" title="執行方式"></a>執行方式</h3><p>xcode 的介面上就有三種按法可以跑測試，當然也可以用終端機跑測試。<br>第一種比較特別，是要設定過 Scheme，並且長按編譯按鈕，然後改成執行測試。<br>第二或三種比較單純，直接執行單一檔案或是單一測試。</p>
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/4.png" class="" width="800">
+
+<h3 id="單元測試命名"><a href="#單元測試命名" class="headerlink" title="單元測試命名"></a>單元測試命名</h3><ul>
+<li>必須以前綴 test 開頭、不帶參數、不返回值，是否用底線由團隊而定</li>
+<li>最好名稱能夠敘述測試的內容，或是包含預期的結果</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test_NumberTool_IsPositive()</span><br><span class="line">testNumberToolIsPositive()</span><br><span class="line">testDataManagerGetDataFromServerStatusCode200()</span><br><span class="line">testDataManagerGetDataFromServerStatusCode400()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="如何把程式寫成可測試"><a href="#如何把程式寫成可測試" class="headerlink" title="如何把程式寫成可測試"></a>如何把程式寫成可測試</h1><ol>
+<li>乾淨的架構 ( MVC、MVVM、VIPER、Clean 等等架構，架構的細膩程度會直接影響能測試的程度 )</li>
+<li>職責單一的物件</li>
+<li>抽離檔案系統 ( UserDefault or File )、資料庫 ( DataBase )、遠端資料 ( Api )<ul>
+<li>抽離的方式最常見的就是使用 Protocol 抽離實作，並且使用依賴注入 ( DI ) 換成假資料</li>
+<li>或是使用一些實作好 Mock 的套件，例如 <a target="_blank" rel="noopener" href="https://cocoapods.org/pods/MockUserDefaults">MockUserDefaults</a></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="常見的測試案例"><a href="#常見的測試案例" class="headerlink" title="常見的測試案例"></a>常見的測試案例</h1><h2 id="對-Model-測試"><a href="#對-Model-測試" class="headerlink" title="對 Model 測試"></a>對 Model 測試</h2><p>可測試 Model 的建構式或是方法。</p>
+<figure class="highlight swift"><figcaption><span>Cake.swift</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Cake</span></span>&#123;</span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">let</span> price: <span class="type">Double</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getPrice</span>(<span class="params">discount</span>: <span class="type">Double</span>)</span> -&gt; <span class="type">Double</span>?&#123;</span><br><span class="line">        <span class="keyword">guard</span> discount <span class="operator">&lt;=</span> <span class="number">1.0</span> <span class="operator">&amp;&amp;</span> discount <span class="operator">&gt;=</span> <span class="number">0.0</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> <span class="literal">nil</span> &#125;</span><br><span class="line">        <span class="keyword">return</span> price <span class="operator">*</span> (<span class="number">1</span> <span class="operator">-</span> discount)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><figcaption><span>CakeTests.swift</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testCakeGetPrice</span>()</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> cake <span class="operator">=</span> <span class="type">Cake</span>(name: <span class="string">&quot;Strawberry Cake&quot;</span>, price: <span class="number">120</span>)</span><br><span class="line">    <span class="keyword">let</span> result <span class="operator">=</span> cake.getPrice(discount: <span class="number">0.2</span>)</span><br><span class="line">    <span class="type">XCTAssertEqual</span>(result, <span class="number">96</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="對-API-測試"><a href="#對-API-測試" class="headerlink" title="對 API 測試"></a>對 API 測試</h2><p>針對 Server 呼叫 API 進行測試，確認回應物件是否如預期，<br>因為會依賴真實伺服器，所以不是單元測試而是整合測試。</p>
+<p>官方針對非同步測試也有寫文章 - <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/xctest/asynchronous_tests_and_expectations/testing_asynchronous_operations_with_expectations">Testing Asynchronous Operations with Expectations</a><br>需要建立 XCTestExpectation 並使用 wait，才能確保非同步下測試會正常。</p>
+<figure class="highlight swift"><figcaption><span>DataManagerTests.swift</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testDataManagerGetData</span>()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 宣告expectation</span></span><br><span class="line">    <span class="keyword">let</span> expect <span class="operator">=</span> expectation(description: <span class="string">&quot;DataManager getData&quot;</span>)</span><br><span class="line">    <span class="keyword">let</span> dataManager <span class="operator">=</span> <span class="type">DataManager</span>()</span><br><span class="line">    dataManager.getData() &#123; </span><br><span class="line">        result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">switch</span> result &#123;</span><br><span class="line">        <span class="keyword">case</span> .success(<span class="keyword">let</span> data):</span><br><span class="line">            <span class="type">XCTAssert</span>(<span class="literal">true</span>)</span><br><span class="line">        <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">            <span class="type">XCTAssert</span>(<span class="literal">false</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 完成結果</span></span><br><span class="line">        expect.fulfill()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 等待非同步結果，timeout 時間為 30 秒</span></span><br><span class="line">    wait(for: [expect], timeout: <span class="number">30.0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="對真實環境的抽離並測試"><a href="#對真實環境的抽離並測試" class="headerlink" title="對真實環境的抽離並測試"></a>對真實環境的抽離並測試</h2><p>當遇到檔案系統、資料庫、遠端資料，可用 Protocol 抽離實作並依賴注入(DI)<br>利用假資料來進行完整的商業邏輯的測試。</p>
+<ol>
+<li>將呼叫遠端資料的邏輯都封裝在一個物件 <code>CakeAPIProvider</code>，好處是方便抽離</li>
+<li>建立一個 protocol <code>CakeProvider</code>，把要抽離的方法都定義出來</li>
+<li>真正在管理資料的 <code>CakeManager</code> 只要使用該 protocol 呼叫各種商業邏輯</li>
+</ol>
+<figure class="highlight swift"><figcaption><span>CakeProvider.swift CakeAPIProvider.swift CakeManager.swift</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">CakeProvider</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getData</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> ((<span class="type">Result</span>&lt;<span class="type">Cake</span>,<span class="type">Error</span>&gt;)-&gt;<span class="type">Void</span>))</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CakeAPIProvider</span>: <span class="title">CakeProvider</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getData</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> ((<span class="type">Result</span>&lt;<span class="type">Cake</span>, <span class="type">Error</span>&gt;) -&gt; <span class="type">Void</span>))</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;...&quot;</span>) <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        <span class="type">AF</span>.request(url).response&#123;</span><br><span class="line">            response <span class="keyword">in</span></span><br><span class="line">            <span class="comment">//completion(...)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CakeManager</span></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> provider: <span class="type">CakeProvider</span> <span class="operator">=</span> <span class="type">CakeAPIProvider</span>()</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getCakePrice</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> ((<span class="type">Result</span>&lt;<span class="type">Double</span>, <span class="type">Error</span>&gt;) -&gt; <span class="type">Void</span>))</span>&#123;</span><br><span class="line">        provider.getData &#123;</span><br><span class="line">            result <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">switch</span> result&#123;</span><br><span class="line">            <span class="keyword">case</span> .success(<span class="keyword">let</span> cake):</span><br><span class="line">                completion(.success(cake.price))</span><br><span class="line">            <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">                completion(.failure(error))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//func ...</span></span><br><span class="line">    <span class="comment">//func ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>到時候要進行測試或抽換實作時，只要換 <code>CakeManager</code> 的 provider 即可！</li>
+</ol>
+<figure class="highlight swift"><figcaption><span>CakeManagerTests.swift</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CakeMockProvider</span>: <span class="title">CakeProvider</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">getData</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> ((<span class="type">Result</span>&lt;<span class="type">Cake</span>, <span class="type">Error</span>&gt;) -&gt; <span class="type">Void</span>))</span> &#123;</span><br><span class="line">        completion(.success(<span class="type">Cake</span>(name: <span class="string">&quot;MockCake&quot;</span>, price: <span class="number">100</span>)))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CakeManagerTests</span>: <span class="title">XCTestCase</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">testCakeManager</span>()</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> cakeManager <span class="operator">=</span> <span class="type">CakeManager</span>()</span><br><span class="line">        cakeManager.provider <span class="operator">=</span> <span class="type">CakeMockProvider</span>() <span class="comment">// 這裡進行抽換</span></span><br><span class="line">        cakeManager.getCakePrice &#123;</span><br><span class="line">            result <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">switch</span> result&#123;</span><br><span class="line">            <span class="keyword">case</span>.success(<span class="keyword">let</span> price):</span><br><span class="line">                <span class="type">XCTAssertEqual</span>(price, <span class="number">100</span>)</span><br><span class="line">            <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">                <span class="type">XCTFail</span>()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="測試覆蓋率-Code-Coverage"><a href="#測試覆蓋率-Code-Coverage" class="headerlink" title="測試覆蓋率 (Code Coverage)"></a>測試覆蓋率 (Code Coverage)</h1><p>測試覆蓋率可以用來看在跑測試的過程中，有多少比例的程式有執行到。</p>
+<h2 id="建立方式"><a href="#建立方式" class="headerlink" title="建立方式"></a>建立方式</h2><p>編輯 Scheme &gt; Test &gt; 勾選 Code Coverage，<br>可以選擇特定 target，盡量選擇自己專案就好，不然會包含一些三方依賴。 </p>
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/6.png" class="" width="800">
+
+<h2 id="查看結果"><a href="#查看結果" class="headerlink" title="查看結果"></a>查看結果</h2><p>可以從 xcode 的活動紀錄裡看到 Coverage</p>
+<img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/7.png" class="" width="800">
+
+<p>追求 100％ 的測試覆蓋率其實不太容易，<br>更何況前端很多是 UI 相關的程式碼，也不是那麼容易寫單元測試，<br>至少確認重要邏輯或是關鍵路徑已經被測試就可以了。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"></div></div><iframe width="100%" height="230px" scrolling="no" frameborder="0" src="https://button.like.co/in/embed/tim801217/button/?referrer=&lt;%- post.permalink %&gt;"></iframe><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/"><img class="next-cover" src="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unsplash_d9ILr-dbEdg.jpg" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Unit Testing 的入門介紹</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/pinkblog/img/avatar.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">pinkpika</div><div class="author-info__description">Simplicity is the soul of efficiency.</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">19</div></a></div><div class="card-info-data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">11</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/pinkpika" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://twitter.com/pinkpika_coding" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.linkedin.com/in/pink-pika-42907613a/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a><a class="social-icon" href="mailto:tim801217@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">最近換了一個新主題 Butterfly，畫面優美有支援深淺模式，附帶的功能也很多。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XCTest"><span class="toc-number">1.</span> <span class="toc-text">XCTest</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Unit-Testing-Bundle"><span class="toc-number">2.</span> <span class="toc-text">Unit Testing Bundle</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%92%B0%E5%AF%AB%E6%B8%AC%E8%A9%A6"><span class="toc-number">2.2.</span> <span class="toc-text">撰寫測試</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Setup-%E5%92%8C-Teardown"><span class="toc-number">2.2.1.</span> <span class="toc-text">Setup 和 Teardown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XCTAssert"><span class="toc-number">2.2.2.</span> <span class="toc-text">XCTAssert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%B7%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.3.</span> <span class="toc-text">執行方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E5%91%BD%E5%90%8D"><span class="toc-number">2.2.4.</span> <span class="toc-text">單元測試命名</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8A%8A%E7%A8%8B%E5%BC%8F%E5%AF%AB%E6%88%90%E5%8F%AF%E6%B8%AC%E8%A9%A6"><span class="toc-number">3.</span> <span class="toc-text">如何把程式寫成可測試</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A6%8B%E7%9A%84%E6%B8%AC%E8%A9%A6%E6%A1%88%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">常見的測試案例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8D-Model-%E6%B8%AC%E8%A9%A6"><span class="toc-number">4.1.</span> <span class="toc-text">對 Model 測試</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8D-API-%E6%B8%AC%E8%A9%A6"><span class="toc-number">4.2.</span> <span class="toc-text">對 API 測試</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8D%E7%9C%9F%E5%AF%A6%E7%92%B0%E5%A2%83%E7%9A%84%E6%8A%BD%E9%9B%A2%E4%B8%A6%E6%B8%AC%E8%A9%A6"><span class="toc-number">4.3.</span> <span class="toc-text">對真實環境的抽離並測試</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%AC%E8%A9%A6%E8%A6%86%E8%93%8B%E7%8E%87-Code-Coverage"><span class="toc-number">5.</span> <span class="toc-text">測試覆蓋率 (Code Coverage)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%B9%E5%BC%8F"><span class="toc-number">5.1.</span> <span class="toc-text">建立方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B5%90%E6%9E%9C"><span class="toc-number">5.2.</span> <span class="toc-text">查看結果</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/" title="XCTest 和 Unit Testing Bundle"><img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/unsplash_d9ILr-dbEdg.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="XCTest 和 Unit Testing Bundle"/></a><div class="content"><a class="title" href="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/" title="XCTest 和 Unit Testing Bundle">XCTest 和 Unit Testing Bundle</a><time datetime="2022-02-06T08:15:10.000Z" title="發表於 2月 6 2022 16:15:10">2月 6 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/" title="Unit Testing 的入門介紹"><img src="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unsplash_d9ILr-dbEdg.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Unit Testing 的入門介紹"/></a><div class="content"><a class="title" href="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/" title="Unit Testing 的入門介紹">Unit Testing 的入門介紹</a><time datetime="2022-02-06T05:56:37.000Z" title="發表於 2月 6 2022 13:56:37">2月 6 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/" title="SwiftLint 靜態檢查器"><img src="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/unsplash_dlxLGIy-2VU.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="SwiftLint 靜態檢查器"/></a><div class="content"><a class="title" href="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/" title="SwiftLint 靜態檢查器">SwiftLint 靜態檢查器</a><time datetime="2022-02-01T05:40:55.000Z" title="發表於 2月 1 2022 13:40:55">2月 1 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/26/DispatchQueue-%E7%9A%84%E7%B0%A1%E5%96%AE%E6%87%89%E7%94%A8/" title="DispatchQueue 的簡單應用"><img src="/pinkblog/2022/01/26/DispatchQueue-%E7%9A%84%E7%B0%A1%E5%96%AE%E6%87%89%E7%94%A8/unsplash_nIEHqGSymRU.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="DispatchQueue 的簡單應用"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/26/DispatchQueue-%E7%9A%84%E7%B0%A1%E5%96%AE%E6%87%89%E7%94%A8/" title="DispatchQueue 的簡單應用">DispatchQueue 的簡單應用</a><time datetime="2022-01-26T06:23:27.000Z" title="發表於 1月 26 2022 14:23:27">1月 26 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/" title="Hexo-RSS+Sitemap設定"><img src="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/cover.png" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Hexo-RSS+Sitemap設定"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/" title="Hexo-RSS+Sitemap設定">Hexo-RSS+Sitemap設定</a><time datetime="2022-01-23T05:33:15.000Z" title="發表於 1月 23 2022 13:33:15">1月 23 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib"><img src="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/unsplash_t5YUoHW6zRo.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Podspec 內使用三方、Asset、Storyboard、Xib"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib">Podspec 內使用三方、Asset、Storyboard、Xib</a><time datetime="2022-01-16T02:39:14.000Z" title="發表於 1月 16 2022 10:39:14">1月 16 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構"><img src="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/cover.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Podspec 調整資料夾結構"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構">Podspec 調整資料夾結構</a><time datetime="2022-01-16T02:38:53.000Z" title="發表於 1月 16 2022 10:38:53">1月 16 2022</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By pinkpika</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/pinkblog/js/utils.js"></script><script src="/pinkblog/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'pinkpika/pinkblog_giscus',
+    'data-repo-id': 'R_kgDOGuAMCw',
+    'data-category-id': 'DIC_kwDOGuAMC84CAzt2',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

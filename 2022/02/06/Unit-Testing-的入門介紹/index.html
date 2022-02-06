@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Unit Testing 的入門介紹 | Pink Blog</title><meta name="author" content="pinkpika,tim801217@gmail.com"><meta name="copyright" content="pinkpika"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="常常聽到說寫測試可以確保程式碼品質、幫助我們不會修壞程式碼，那具體來說測試到底是什麼樣的東西呢？ 單元測試 (Unit Testing)單元測試是一組驗證功能的程式碼，這段程式會呼叫被測試的工作單元，並且針對結果進行驗證，為了可以在開發過程中或是發布之前可以找到邏輯錯誤的功能，通常都會加在 CI&#x2F;CD 的流程中。 一組單元測試通常有三個步驟：  Arrange：準備 &#x3D;&gt; 初始化並設定好要測">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unit Testing 的入門介紹">
+<meta property="og:url" content="http://pinkpika.github.io/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/index.html">
+<meta property="og:site_name" content="Pink Blog">
+<meta property="og:description" content="常常聽到說寫測試可以確保程式碼品質、幫助我們不會修壞程式碼，那具體來說測試到底是什麼樣的東西呢？ 單元測試 (Unit Testing)單元測試是一組驗證功能的程式碼，這段程式會呼叫被測試的工作單元，並且針對結果進行驗證，為了可以在開發過程中或是發布之前可以找到邏輯錯誤的功能，通常都會加在 CI&#x2F;CD 的流程中。 一組單元測試通常有三個步驟：  Arrange：準備 &#x3D;&gt; 初始化並設定好要測">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unsplash_d9ILr-dbEdg.jpg">
+<meta property="article:published_time" content="2022-02-06T05:56:37.000Z">
+<meta property="article:modified_time" content="2022-02-06T18:24:48.732Z">
+<meta property="article:author" content="pinkpika">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unsplash_d9ILr-dbEdg.jpg"><link rel="shortcut icon" href="/pinkblog/"><link rel="canonical" href="http://pinkpika.github.io/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/pinkblog/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-J63BRH65VP');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/pinkblog/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Unit Testing 的入門介紹',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2月 7 2022 2:24:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/pinkblog/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">19</div></a></div><div class="data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">11</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/song/"><i class="fa-fw fas fa-music"></i><span> Song</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unsplash_d9ILr-dbEdg.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/pinkblog/">Pink Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/song/"><i class="fa-fw fas fa-music"></i><span> Song</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Unit Testing 的入門介紹</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2022-02-06T05:56:37.000Z" title="發表於 2月 6 2022 13:56:37">2月 6 2022</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2022-02-06T18:24:48.732Z" title="更新於 2月 7 2022 2:24:48">2月 7 2022</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/">iOS Development</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/Testing/">Testing</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Unit Testing 的入門介紹"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>常常聽到說寫測試可以確保程式碼品質、幫助我們不會修壞程式碼，<br>那具體來說測試到底是什麼樣的東西呢？</p>
+<h1 id="單元測試-Unit-Testing"><a href="#單元測試-Unit-Testing" class="headerlink" title="單元測試 (Unit Testing)"></a>單元測試 (Unit Testing)</h1><p>單元測試是一組驗證功能的程式碼，這段程式會呼叫被測試的工作單元，並且針對結果進行驗證，<br>為了可以在開發過程中或是發布之前可以找到邏輯錯誤的功能，通常都會加在 CI/CD 的流程中。</p>
+<p>一組單元測試通常有三個步驟：</p>
+<ol>
+<li>Arrange：準備 =&gt; 初始化並設定好要測驗的物件</li>
+<li>Act：操作 =&gt; 執行要驗證的方法</li>
+<li>Assert：驗證 =&gt; 對結果進行驗證是不是符合預期</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testNumberToolIsPositive</span>()</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Arrange：準備</span></span><br><span class="line">    <span class="keyword">let</span> numberTool <span class="operator">=</span> <span class="type">NumberTool</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Act：操作</span></span><br><span class="line">    <span class="keyword">let</span> result <span class="operator">=</span> numberTool.isPositive(input: <span class="number">999</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Assert：驗證</span></span><br><span class="line">    <span class="type">XCTAssert</span>(result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="單元測試的關鍵特質"><a href="#單元測試的關鍵特質" class="headerlink" title="單元測試的關鍵特質"></a>單元測試的關鍵特質</h1><ol>
+<li>自動化且可被重複執行的</li>
+<li>容易實作的</li>
+<li>容易執行的 (隨便按個鈕就可以)</li>
+<li>非臨時性的 (這個測試到第二天第三天仍有意義，並可以執行)</li>
+<li>執行速度很快的</li>
+<li>執行結果一致的</li>
+<li>完全獨立的 (不依賴其他因素或測試)</li>
+<li>測試目標清楚的 (發生錯誤可以明確知道哪裡有問題)</li>
+</ol>
+<div class="note warning flat"><p>假設你的測試有不符合上面單元測試的特質，很有可能你的是屬於”整合測試”</p>
+</div>
+
+<h1 id="整合測試-Integration-Testing"><a href="#整合測試-Integration-Testing" class="headerlink" title="整合測試 (Integration Testing)"></a>整合測試 (Integration Testing)</h1><p>當你的測試依賴某種環境或是帶有不定因素(例如系統時間、網路狀態)，<br>或是用到了真實的檔案系統或是資料庫等等，這些測試都將屬於整合測試。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testDataManagerGetDataFromServer</span>()</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> dataManager <span class="operator">=</span> <span class="type">DataManager</span>()</span><br><span class="line">    dataManager.getDataFromServer &#123; <span class="comment">// ---&gt; 假設此方法呼叫了Api</span></span><br><span class="line">        result <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">switch</span> result&#123;</span><br><span class="line">        <span class="keyword">case</span> .success(<span class="keyword">let</span> data):</span><br><span class="line">            <span class="type">XCTAssert</span>(<span class="literal">true</span>)</span><br><span class="line">        <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">            <span class="type">XCTAssert</span>(<span class="literal">false</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>整合測試依然有必要，但有個問題就是一次測試太多東西，<br>無法確定到底是誰壞了，到底是前端 API 物件寫壞還是 Server 目前是壞掉的呢？</p>
+<hr>
+<div class="note warning flat"><p>寫好單元測試就好了嗎？</p>
+</div>
+
+<img src="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unitTests.gif" class="" width="300" title="兩個完美的單元測試，不代表運作會正常...">
+
+<hr>
+<h1 id="測試金字塔-Testing-Pyramid"><a href="#測試金字塔-Testing-Pyramid" class="headerlink" title="測試金字塔 (Testing Pyramid)"></a>測試金字塔 (Testing Pyramid)</h1><p>前端往往包含大量 UI 的互動和多樣的資料來源，<br>如果只依靠單元測試，可能沒辦法完全測試出可能的問題，所以衍伸出不同層級的測試方式，也就是測試金字塔。<br>網路上有各種不同的版本，依照不同產品可衍生不同分層，但是想表達的概念都大同小異！</p>
+<img src="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/testing-pyramid.png" class="" width="500">
+
+<p>這裡簡單說明最常見的三層：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>定義</th>
+<th>特點</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UI測試(UI Testing)</td>
+<td>從使用者角度的測試，實際操作App</td>
+<td>速度慢、撰寫成本高、維護成本高</td>
+</tr>
+<tr>
+<td>整合測試(Integration Testing)</td>
+<td>測試包含實際的伺服器、DB</td>
+<td>介於中間</td>
+</tr>
+<tr>
+<td>單元測試(Unit Testing)</td>
+<td>單純測試邏輯，並隔離所有外部因素</td>
+<td>速度快、撰寫成本低、維護成本低</td>
+</tr>
+</tbody></table>
+<p>撰寫測試的順序是由下至上，像是蓋房子一樣，<br>通常單元測試是涵蓋範圍最大的，需要針對大部分的 <strong>基底物件方法和商業邏輯</strong> 進行測試，<br>而整合測試、UI測試應該會越來越少才對，對 <strong>關鍵路徑(Critical Path)</strong> 進行測試即可。</p>
+<h1 id="推薦書單"><a href="#推薦書單" class="headerlink" title="推薦書單"></a>推薦書單</h1><p><a target="_blank" rel="noopener" href="https://www.tenlong.com.tw/products/9789864342471?list_name=srh">單元測試的藝術(The Art of Unit Testing)</a></p>
+<p>最重要的三個章節：</p>
+<ul>
+<li>第1章：單元測試定義</li>
+<li>第8章：好的單元測試</li>
+<li>第11章：如何讓程式變可測試</li>
+</ul>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"></div></div><iframe width="100%" height="230px" scrolling="no" frameborder="0" src="https://button.like.co/in/embed/tim801217/button/?referrer=&lt;%- post.permalink %&gt;"></iframe><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/"><img class="prev-cover" src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/unsplash_d9ILr-dbEdg.jpg" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">XCTest 和 Unit Testing Bundle</div></div></a></div><div class="next-post pull-right"><a href="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/"><img class="next-cover" src="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/unsplash_dlxLGIy-2VU.jpg" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">SwiftLint 靜態檢查器</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/pinkblog/img/avatar.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">pinkpika</div><div class="author-info__description">Simplicity is the soul of efficiency.</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">19</div></a></div><div class="card-info-data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">11</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/pinkpika" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://twitter.com/pinkpika_coding" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.linkedin.com/in/pink-pika-42907613a/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a><a class="social-icon" href="mailto:tim801217@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">最近換了一個新主題 Butterfly，畫面優美有支援深淺模式，附帶的功能也很多。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-Unit-Testing"><span class="toc-number">1.</span> <span class="toc-text">單元測試 (Unit Testing)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E7%9A%84%E9%97%9C%E9%8D%B5%E7%89%B9%E8%B3%AA"><span class="toc-number">2.</span> <span class="toc-text">單元測試的關鍵特質</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E5%90%88%E6%B8%AC%E8%A9%A6-Integration-Testing"><span class="toc-number">3.</span> <span class="toc-text">整合測試 (Integration Testing)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%AC%E8%A9%A6%E9%87%91%E5%AD%97%E5%A1%94-Testing-Pyramid"><span class="toc-number">4.</span> <span class="toc-text">測試金字塔 (Testing Pyramid)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A8%E8%96%A6%E6%9B%B8%E5%96%AE"><span class="toc-number">5.</span> <span class="toc-text">推薦書單</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/" title="XCTest 和 Unit Testing Bundle"><img src="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/unsplash_d9ILr-dbEdg.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="XCTest 和 Unit Testing Bundle"/></a><div class="content"><a class="title" href="/pinkblog/2022/02/06/XCTest-%E5%92%8C-Unit-Testing-Bundle/" title="XCTest 和 Unit Testing Bundle">XCTest 和 Unit Testing Bundle</a><time datetime="2022-02-06T08:15:10.000Z" title="發表於 2月 6 2022 16:15:10">2月 6 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/" title="Unit Testing 的入門介紹"><img src="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/unsplash_d9ILr-dbEdg.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Unit Testing 的入門介紹"/></a><div class="content"><a class="title" href="/pinkblog/2022/02/06/Unit-Testing-%E7%9A%84%E5%85%A5%E9%96%80%E4%BB%8B%E7%B4%B9/" title="Unit Testing 的入門介紹">Unit Testing 的入門介紹</a><time datetime="2022-02-06T05:56:37.000Z" title="發表於 2月 6 2022 13:56:37">2月 6 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/" title="SwiftLint 靜態檢查器"><img src="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/unsplash_dlxLGIy-2VU.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="SwiftLint 靜態檢查器"/></a><div class="content"><a class="title" href="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/" title="SwiftLint 靜態檢查器">SwiftLint 靜態檢查器</a><time datetime="2022-02-01T05:40:55.000Z" title="發表於 2月 1 2022 13:40:55">2月 1 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/26/DispatchQueue-%E7%9A%84%E7%B0%A1%E5%96%AE%E6%87%89%E7%94%A8/" title="DispatchQueue 的簡單應用"><img src="/pinkblog/2022/01/26/DispatchQueue-%E7%9A%84%E7%B0%A1%E5%96%AE%E6%87%89%E7%94%A8/unsplash_nIEHqGSymRU.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="DispatchQueue 的簡單應用"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/26/DispatchQueue-%E7%9A%84%E7%B0%A1%E5%96%AE%E6%87%89%E7%94%A8/" title="DispatchQueue 的簡單應用">DispatchQueue 的簡單應用</a><time datetime="2022-01-26T06:23:27.000Z" title="發表於 1月 26 2022 14:23:27">1月 26 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/" title="Hexo-RSS+Sitemap設定"><img src="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/cover.png" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Hexo-RSS+Sitemap設定"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/23/Hexo-RSS-Sitemap%E8%A8%AD%E5%AE%9A/" title="Hexo-RSS+Sitemap設定">Hexo-RSS+Sitemap設定</a><time datetime="2022-01-23T05:33:15.000Z" title="發表於 1月 23 2022 13:33:15">1月 23 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib"><img src="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/unsplash_t5YUoHW6zRo.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Podspec 內使用三方、Asset、Storyboard、Xib"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib">Podspec 內使用三方、Asset、Storyboard、Xib</a><time datetime="2022-01-16T02:39:14.000Z" title="發表於 1月 16 2022 10:39:14">1月 16 2022</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構"><img src="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/cover.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/404.jpg'" alt="Podspec 調整資料夾結構"/></a><div class="content"><a class="title" href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構">Podspec 調整資料夾結構</a><time datetime="2022-01-16T02:38:53.000Z" title="發表於 1月 16 2022 10:38:53">1月 16 2022</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By pinkpika</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/pinkblog/js/utils.js"></script><script src="/pinkblog/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'pinkpika/pinkblog_giscus',
+    'data-repo-id': 'R_kgDOGuAMCw',
+    'data-category-id': 'DIC_kwDOGuAMC84CAzt2',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
