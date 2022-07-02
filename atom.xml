@@ -6,7 +6,7 @@
   <link href="http://pinkpika.github.io/pinkblog/atom.xml" rel="self"/>
   
   <link href="http://pinkpika.github.io/pinkblog/"/>
-  <updated>2022-05-31T18:01:23.491Z</updated>
+  <updated>2022-07-02T13:38:50.365Z</updated>
   <id>http://pinkpika.github.io/pinkblog/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ssh public key fingerprints 衝突案例</title>
+    <link href="http://pinkpika.github.io/pinkblog/2022/06/22/ssh-public-key-fingerprints-%E8%A1%9D%E7%AA%81%E6%A1%88%E4%BE%8B/"/>
+    <id>http://pinkpika.github.io/pinkblog/2022/06/22/ssh-public-key-fingerprints-%E8%A1%9D%E7%AA%81%E6%A1%88%E4%BE%8B/</id>
+    <published>2022-06-22T09:13:18.000Z</published>
+    <updated>2022-07-02T13:38:50.365Z</updated>
+    
+    <content type="html"><![CDATA[<div class="note default flat"><p>近期在開發過程中 ssh 連線時驗證公鑰指紋 ( public key fingerprints )，發生過兩次的衝突案例，希望在此記錄下來，以便未來回顧之用。</p></div><h1 id="衝突案例"><a href="#衝突案例" class="headerlink" title="衝突案例"></a>衝突案例</h1><p>ssh 連線常用於 git 操作或是遠端連線伺服器，身份驗證可以使用”公鑰私鑰交換”或是”用戶帳密”來進行身份驗證，正好下面提到的兩個案例各有一個。</p><ul><li>案例1:<ul><li>某天晚上公司 MIS 幫大家換內部自建的私有 GitLab 機台，當然換的過程有完整備份，最後連線的 ip 也是相同沒有更換，但隔天大家要使用 git ssh 的方式發動遠端操作，例如 push pull …，結果失敗 🤯</li></ul></li><li>案例2:<ul><li>某天我將公司 CI 機進行更換，換成另一台硬體性能比較好的機器，一樣有做完整轉移和設定，但最後我使用終端機發動遠端連線 <code>ssh user@192.168.ooo.xxx</code>，結果失敗 🤯</li></ul></li></ul><h1 id="問題原因"><a href="#問題原因" class="headerlink" title="問題原因"></a>問題原因</h1><p>進行 ssh 連線有一個漏洞需要進行防範，就是中間人攻擊 ( <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a> )，可以用惡意的攔截封包軟體，並且在發送資料前後進行解密和重新加密，為了保護 ssh 連線，因此在第一次連線會建立 fingerprints，下次連線時會檢查它跟這次連線是否吻合，而它就儲存在 <code>~/.ssh/known_hosts</code>。</p><p>想當然案例 1 或是案例 2 發生時 fingerprints 都會發生驗證錯誤，<strong>主機更換但 ip 不變</strong> 就像是仿照了一台假機器進行攻擊一樣，不過我們自己知道目前的機器是對的。</p><p>參考來源: <a href="https://www.phcomp.co.uk/Tutorials/Unix-And-Linux/ssh-check-server-fingerprint.html">Checking ssh public key fingerprints</a></p><h1 id="解決方法"><a href="#解決方法" class="headerlink" title="解決方法"></a>解決方法</h1><p>解法就是編輯 known_hosts，移除指定的連線 fingerprint 即可！<br>可以直接打開文件編輯，也可用下列指令！</p><ul><li><p>查看目前的 known_hosts</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/known_hosts</span><br></pre></td></tr></table></figure></li><li><p>移除特定 fingerprints</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -R 192.168.ooo.xxx</span><br><span class="line">ssh-keygen -R &quot;[192.168.ooo.xxx]:12345&quot;</span><br></pre></td></tr></table></figure></li></ul><img src="/pinkblog/2022/06/22/ssh-public-key-fingerprints-%E8%A1%9D%E7%AA%81%E6%A1%88%E4%BE%8B/1.png" class="" width="600"><img src="/pinkblog/2022/06/22/ssh-public-key-fingerprints-%E8%A1%9D%E7%AA%81%E6%A1%88%E4%BE%8B/2.png" class="" width="600"><hr><p>題外話: 因為筆者平常開發 iOS 習慣用 Sourcetree，所以案例 1 在移除特定 fingerprints 後，還需要到終端機進行 git clone 任一專案讓 fingerprints 重新設定完成，不然 Sourcetree 傻傻地會有奇怪的錯誤。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;div class=&quot;note default flat&quot;&gt;&lt;p&gt;近期在開發過程中 ssh 連線時驗證公鑰指紋 ( public key fingerprints )，發生過兩次的衝突案例，希望在此記錄下來，以便未來回顧之用。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;衝突案例&quot;</summary>
+      
+    
+    
+    
+    <category term="Other" scheme="http://pinkpika.github.io/pinkblog/categories/Other/"/>
+    
+    
+    <category term="ssh" scheme="http://pinkpika.github.io/pinkblog/tags/ssh/"/>
+    
+  </entry>
   
   <entry>
     <title>SwiftUI View 的使用探討</title>
@@ -176,35 +203,6 @@
     <category term="iOS" scheme="http://pinkpika.github.io/pinkblog/tags/iOS/"/>
     
     <category term="Unit Testing" scheme="http://pinkpika.github.io/pinkblog/tags/Unit-Testing/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SwiftLint 靜態檢查器</title>
-    <link href="http://pinkpika.github.io/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/"/>
-    <id>http://pinkpika.github.io/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/</id>
-    <published>2022-02-01T05:40:55.000Z</published>
-    <updated>2022-02-17T18:17:52.737Z</updated>
-    
-    <content type="html"><![CDATA[<div class="note default flat"><p>本篇會介紹 Coding Style 與 iOS 平台上最活躍的靜態檢查器 SwiftLint，<br>可以幫助你的程式碼保持一致的風格，並且讓團隊有相同的規範可以遵循。</p></div><h1 id="CodingStyle"><a href="#CodingStyle" class="headerlink" title="CodingStyle"></a>CodingStyle</h1><p>CodingStyle 就是指寫作程式碼的風格，其中包含很多面向，<br>例如說是變數命名方式、是否有空格、是否要換行、註解格式、修飾詞的順序等等，<br>有時程式碼的功能是相同的，但是會因為風格的不同導致看起來差很多，嚴重一點甚至會有閱讀上的困難，<br>因此往往成熟的團隊會需要訂定一套規則來規範它。</p><h1 id="CodingStyle-規則"><a href="#CodingStyle-規則" class="headerlink" title="CodingStyle 規則"></a>CodingStyle 規則</h1><p>CodingStyle 規則就像一份穿搭規則，可以讓團隊裡的程式碼保持下面三個特點。</p><ol><li>可讀性</li><li>易維護</li><li>一致性</li></ol><p>自己定義一套穿搭規則其實蠻不容易的，因此可以參考下面兩個網站。</p><ol><li><a href="https://www.swift.org/documentation/api-design-guidelines/">swift.org - API Design Guidelines</a><ul><li>swift 官方的 API 設計方式，比較偏概念性</li></ul></li><li><a href="https://github.com/raywenderlich/swift-style-guide">raywenderlich - Swift Style</a><ul><li>raywenderlich 出的一套 CodingStyle，目前算是開源社群裡最多人遵循的的一套規則</li><li>定義的規則也相當明確，會跟你說什麼是對的、什麼是錯的</li></ul></li></ol><h1 id="CodingStyle-靜態檢查器"><a href="#CodingStyle-靜態檢查器" class="headerlink" title="CodingStyle 靜態檢查器"></a>CodingStyle 靜態檢查器</h1><p>有了穿搭規則還需要一位服裝審核員幫我們檢驗，檢查程式碼是否有依照規則穿搭，<br>最大的好處是可以自動化地檢查寫作風格是否正確，甚至有些可以幫你自動修正。</p><h2 id="SwiftLint"><a href="#SwiftLint" class="headerlink" title="SwiftLint"></a>SwiftLint</h2><p><a href="https://github.com/realm/SwiftLint">SwiftLint</a> 則是 <a href="https://github.com/realm">realm</a> 公司出的一款 CodingStyle 靜態檢查器，<br>選用此工具原因是目前熱門獨大且唯一持續更新，<br>而且 SwiftLint 的預設規則就遵循大部分 raywenderlich 的 Swift Style。</p><h3 id="安裝方式"><a href="#安裝方式" class="headerlink" title="安裝方式"></a>安裝方式</h3><ol><li><p>在終端機輸入下方指令，專案初始化pod (請事先電腦安裝過 CocoaPods)</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod init</span><br></pre></td></tr></table></figure></li><li><p>設定 PodFile，開啟專案內的 PodFile 檔案加入下面程式碼</p><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod <span class="string">&#x27;SwiftLint&#x27;</span></span><br></pre></td></tr></table></figure></li><li><p>在終端機輸入下方指令，安裝三方</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure></li><li><p>設定 Build Phases，開啟專案內設定Build Phases &gt; 按 “＋” &gt; RunScript &gt; 輸入下方腳本</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;$&#123;PODS_ROOT&#125;/SwiftLint/swiftlint&quot; lint</span><br></pre></td></tr></table></figure></li></ol><h3 id="執行方法"><a href="#執行方法" class="headerlink" title="執行方法"></a>執行方法</h3><p>直接按下編譯即可！</p><img src="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/1.png" class="" width="800"><h3 id="禁用規則"><a href="#禁用規則" class="headerlink" title="禁用規則"></a>禁用規則</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// swiftlint:disable colon</span></span><br><span class="line"><span class="keyword">let</span> noWarning :<span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span> <span class="comment">// 我被跳過了</span></span><br><span class="line"><span class="comment">// swiftlint:enable colon</span></span><br><span class="line"><span class="keyword">let</span> hasWarning :<span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span> <span class="comment">// 我被禁止了</span></span><br></pre></td></tr></table></figure><h3 id="規則清單"><a href="#規則清單" class="headerlink" title="規則清單"></a>規則清單</h3><p>下面連結的每一條都是一條規則，有些是預設有、有些是預設沒有，<br>並且每一條都有詳細的範例說明怎樣是正確的、怎樣是錯誤的。</p><p><a href="https://realm.github.io/SwiftLint/rule-directory.html">Rule Directory</a></p><h3 id="客製化規則"><a href="#客製化規則" class="headerlink" title="客製化規則"></a>客製化規則</h3><p>當然有時候會需要調整成適合團隊的規範，請先依照下面步驟調整 Config，<br>最後細部調整 Config 檔案內的規則即可。</p><ol><li><p>調整 Build Phases</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;$&#123;PODS_ROOT&#125;/SwiftLint/swiftlint&quot; lint --config &quot;$&#123;SRCROOT&#125;/swiftlint.yml&quot;</span><br></pre></td></tr></table></figure></li><li><p>放入規則設定檔，放在專案的根目錄，叫做”swiftlint.yml”</p></li><li><p>一樣直接按下編譯即可！</p></li></ol><img src="/pinkblog/2022/02/01/SwiftLint-%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5%E5%99%A8/2.png" class="" width="800"><h3 id="客製化規則範例"><a href="#客製化規則範例" class="headerlink" title="客製化規則範例"></a>客製化規則範例</h3><p>Swiftlint 的客製化規則是非常彈性的，<br>可以開啟或關閉某些規則，<br>甚至可以用正規表達式定義全新的規則，<br>發生不符合規則要觸發”warning”或是”error”也可以自由決定，<br>也可以跳過固定的路徑的檢查，例如 Pods 裡的三方檔案，避免浪費檢查效能，<br>最後連報錯的方式也提供很多種，例如 xcode, json … 等等支援各式各樣的報告。</p><p>這裡有一個完整範例可以參考：<a href="https://github.com/pinkpika/SwiftLintDemo/blob/main/swiftlint.yml">swiftlint.yml</a></p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不啟用的規則</span></span><br><span class="line"><span class="attr">disabled_rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 啟用的規則</span></span><br><span class="line"><span class="attr">opt_in_rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 客製化的規則</span></span><br><span class="line"><span class="attr">custom_rules:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 執行linting包含的路徑</span></span><br><span class="line"><span class="attr">included:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 執行linting忽略的路徑(優先度大於included)</span></span><br><span class="line"><span class="attr">excluded:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 報錯類型</span></span><br><span class="line"><span class="attr">reporter:</span> <span class="string">&quot;xcode&quot;</span></span><br></pre></td></tr></table></figure><h2 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h2><ul><li><a href="https://github.com/sleekbyte/tailor">tailor</a>：另一套靜態檢查器<ul><li>但有個嚴重問題，目前只支援到Swift3.0，無人更新…</li></ul></li><li><a href="https://github.com/nicklockwood/SwiftFormat">SwiftFormat</a>：強制格式化的工具<ul><li>尚未深入研究，但能設定的條件不夠多。</li></ul></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;div class=&quot;note default flat&quot;&gt;&lt;p&gt;本篇會介紹 Coding Style 與 iOS 平台上最活躍的靜態檢查器 SwiftLint，&lt;br&gt;可以幫助你的程式碼保持一致的風格，並且讓團隊有相同的規範可以遵循。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;</summary>
-      
-    
-    
-    
-    <category term="iOS Development" scheme="http://pinkpika.github.io/pinkblog/categories/iOS-Development/"/>
-    
-    
-    <category term="iOS" scheme="http://pinkpika.github.io/pinkblog/tags/iOS/"/>
-    
-    <category term="CodingStyle" scheme="http://pinkpika.github.io/pinkblog/tags/CodingStyle/"/>
     
   </entry>
   
