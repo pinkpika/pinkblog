@@ -328,79 +328,6 @@ hr:before,
   -ms-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
-#content-inner,
-#footer {
-  -webkit-animation: bottom-top 1s;
-  -moz-animation: bottom-top 1s;
-  -o-animation: bottom-top 1s;
-  -ms-animation: bottom-top 1s;
-  animation: bottom-top 1s;
-}
-#page-header {
-  -webkit-animation: header-effect 1s;
-  -moz-animation: header-effect 1s;
-  -o-animation: header-effect 1s;
-  -ms-animation: header-effect 1s;
-  animation: header-effect 1s;
-}
-#site-title,
-#site-subtitle {
-  -webkit-animation: titleScale 1s;
-  -moz-animation: titleScale 1s;
-  -o-animation: titleScale 1s;
-  -ms-animation: titleScale 1s;
-  animation: titleScale 1s;
-}
-#nav.show {
-  -webkit-animation: headerNoOpacity 1s;
-  -moz-animation: headerNoOpacity 1s;
-  -o-animation: headerNoOpacity 1s;
-  -ms-animation: headerNoOpacity 1s;
-  animation: headerNoOpacity 1s;
-}
-canvas:not(#ribbon-canvas),
-#web_bg {
-  -webkit-animation: to_show 4s;
-  -moz-animation: to_show 4s;
-  -o-animation: to_show 4s;
-  -ms-animation: to_show 4s;
-  animation: to_show 4s;
-}
-#ribbon-canvas {
-  -webkit-animation: ribbon_to_show 4s;
-  -moz-animation: ribbon_to_show 4s;
-  -o-animation: ribbon_to_show 4s;
-  -ms-animation: ribbon_to_show 4s;
-  animation: ribbon_to_show 4s;
-}
-#sidebar-menus.open > :nth-child(1) {
-  -webkit-animation: sidebarItem 0.2s;
-  -moz-animation: sidebarItem 0.2s;
-  -o-animation: sidebarItem 0.2s;
-  -ms-animation: sidebarItem 0.2s;
-  animation: sidebarItem 0.2s;
-}
-#sidebar-menus.open > :nth-child(2) {
-  -webkit-animation: sidebarItem 0.4s;
-  -moz-animation: sidebarItem 0.4s;
-  -o-animation: sidebarItem 0.4s;
-  -ms-animation: sidebarItem 0.4s;
-  animation: sidebarItem 0.4s;
-}
-#sidebar-menus.open > :nth-child(3) {
-  -webkit-animation: sidebarItem 0.6s;
-  -moz-animation: sidebarItem 0.6s;
-  -o-animation: sidebarItem 0.6s;
-  -ms-animation: sidebarItem 0.6s;
-  animation: sidebarItem 0.6s;
-}
-#sidebar-menus.open > :nth-child(4) {
-  -webkit-animation: sidebarItem 0.8s;
-  -moz-animation: sidebarItem 0.8s;
-  -o-animation: sidebarItem 0.8s;
-  -ms-animation: sidebarItem 0.8s;
-  animation: sidebarItem 0.8s;
-}
 .card-announcement-animation {
   color: #f00;
   -webkit-animation: announ_animation 0.8s linear infinite;
@@ -2253,13 +2180,6 @@ figure.highlight pre .javascript .function {
     width: calc(100% - 15px) !important;
   }
 }
-#article-container .flink .flink-list > .flink-list-item:hover img {
-  -webkit-transform: rotate(360deg);
-  -moz-transform: rotate(360deg);
-  -o-transform: rotate(360deg);
-  -ms-transform: rotate(360deg);
-  transform: rotate(360deg);
-}
 #article-container .flink .flink-list > .flink-list-item:before {
   position: absolute;
   top: 0;
@@ -2267,7 +2187,7 @@ figure.highlight pre .javascript .function {
   bottom: 0;
   left: 0;
   z-index: -1;
-  background: var(--text-bg-hover);
+  background: rgba(7,17,27,0.05);
   content: '';
   -webkit-transition: -webkit-transform 0.3s ease-out;
   -moz-transition: -moz-transform 0.3s ease-out;
@@ -2899,8 +2819,8 @@ h1.page-title + .tag-cloud-list {
 .avatar-img {
   overflow: hidden;
   margin: 0 auto;
-  width: 110px;
-  height: 110px;
+  width: 50px;
+  height: 50px;
   border-radius: 70px;
 }
 .avatar-img img {

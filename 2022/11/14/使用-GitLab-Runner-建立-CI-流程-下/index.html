@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="zh-TW" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>使用 GitLab Runner 建立 CI 流程 - 下 | Pink Blog</title><meta name="keywords" content="iOS,CICD"><meta name="author" content="pinkpika,tim801217@gmail.com"><meta name="copyright" content="pinkpika"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="建立 CI 流程除了需要建立 Runner 以外，另一部分就是需要設定好 CI 腳本，下面我們就根據 iOS 的專案來建立一個 CI 腳本，未來也可依照不同需求不同平台的專案，建立出專屬自己的腳本！   基本設定 請先在 Repo 的根目錄下建立一個檔案，檔名為 .gitlab-ci.yml，並且打開後編輯它    首先要先設定有哪些 stages 狀態，這些狀態會對應在 pipeline 上的每">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 GitLab Runner 建立 CI 流程 - 下">
+<meta property="og:url" content="http://pinkpika.github.io/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/index.html">
+<meta property="og:site_name" content="Pink Blog">
+<meta property="og:description" content="建立 CI 流程除了需要建立 Runner 以外，另一部分就是需要設定好 CI 腳本，下面我們就根據 iOS 的專案來建立一個 CI 腳本，未來也可依照不同需求不同平台的專案，建立出專屬自己的腳本！   基本設定 請先在 Repo 的根目錄下建立一個檔案，檔名為 .gitlab-ci.yml，並且打開後編輯它    首先要先設定有哪些 stages 狀態，這些狀態會對應在 pipeline 上的每">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="http://pinkpika.github.io/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/pankaj-patel-ZV_64LdGoao-unsplash.jpg">
+<meta property="article:published_time" content="2022-11-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-12-11T06:27:39.941Z">
+<meta property="article:author" content="pinkpika">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="CICD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://pinkpika.github.io/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/pankaj-patel-ZV_64LdGoao-unsplash.jpg"><link rel="shortcut icon" href="/pinkblog/"><link rel="canonical" href="http://pinkpika.github.io/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/pinkblog/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J63BRH65VP"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-J63BRH65VP');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/pinkblog/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '複製成功',
+    error: '複製錯誤',
+    noSupport: '瀏覽器不支援'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '剛剛',
+    min: '分鐘前',
+    hour: '小時前',
+    day: '天前',
+    month: '個月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '使用 GitLab Runner 建立 CI 流程 - 下',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '12月 11 2022 14:27:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/pinkblog/atom.xml" title="Pink Blog" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/pinkblog/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">29</div></a></div><div class="data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">18</div></a></div><div class="data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">6</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Other</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pinkblog/booklist/"><i class="fa-fw fas fa-book"></i><span> Booklist</span></a></li><li><a class="site-page child" href="/pinkblog/song/"><i class="fa-fw fas fa-music"></i><span> Song</span></a></li><li><a class="site-page child" href="/pinkblog/mind/"><i class="fa-fw fas fa-heart"></i><span> Mind</span></a></li><li><a class="site-page child" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/pinkblog/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/pinkblog/">Pink Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/pinkblog/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/pinkblog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> Other</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pinkblog/booklist/"><i class="fa-fw fas fa-book"></i><span> Booklist</span></a></li><li><a class="site-page child" href="/pinkblog/song/"><i class="fa-fw fas fa-music"></i><span> Song</span></a></li><li><a class="site-page child" href="/pinkblog/mind/"><i class="fa-fw fas fa-heart"></i><span> Mind</span></a></li><li><a class="site-page child" href="/pinkblog/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></li><li><a class="site-page child" href="/pinkblog/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">使用 GitLab Runner 建立 CI 流程 - 下</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">發表於</span><time class="post-meta-date-created" datetime="2022-11-13T16:00:00.000Z" title="發表於 11月 14 2022 0:00:00">11月 14 2022</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新於</span><time class="post-meta-date-updated" datetime="2022-12-11T06:27:39.941Z" title="更新於 12月 11 2022 14:27:39">12月 11 2022</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/pinkblog/categories/iOS-Development/">iOS Development</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="使用 GitLab Runner 建立 CI 流程 - 下"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閱讀量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><div class="note default flat"><p>建立 CI 流程除了需要建立 Runner 以外，另一部分就是需要設定好 CI 腳本，下面我們就根據 iOS 的專案來建立一個 CI 腳本，未來也可依照不同需求不同平台的專案，建立出專屬自己的腳本！</p>
+</div>
+
+<h1 id="基本設定"><a href="#基本設定" class="headerlink" title="基本設定"></a>基本設定</h1><ol>
+<li><p>請先在 Repo 的根目錄下建立一個檔案，檔名為 <code>.gitlab-ci.yml</code>，並且打開後編輯它 </p>
+ <img src="/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/install1.jpg" class=""></li>
+<li><p>首先要先設定有哪些 <code>stages</code> 狀態，這些狀態會對應在 pipeline 上的每個步驟，如下圖</p>
+ <img src="/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/install2.jpg" class="">
+
+<p> 這裡列出範例的狀態，請依照需求自行調整。</p>
+<ul>
+<li>start: 開始 CI 流程，可以執行通知 Slack 等等的腳本</li>
+<li>lint: 跑靜態檢查器，可以跑 swiftlint 或 swiftformat</li>
+<li>build: 編譯程式碼</li>
+<li>unittest: 跑單元測試</li>
+<li>archive: 可以在打 tag 時進行發版到 testflight ( 此處先略過，如果需要發版可呼叫 fastlane 的指令 )</li>
+<li>tracing: 追蹤某些程式碼狀況或版號 </li>
+<li>end: 結束 CI 流程</li>
+</ul>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">start</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">lint</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">build</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">unittest</span></span><br><span class="line"><span class="comment"># - archive</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">tracing</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">end</span></span><br></pre></td></tr></table></figure></li>
+<li><p>推薦定義 <code>before_script</code></p>
+<p> 每一個 stage 都會先跑這段，可以顯示 MR 資訊、Runner 資訊、現在路徑等等，方便找出問題，此處的語法就會是 Shell Script，就是終端機常用的指令方式，可以上網找找使用方式。</p>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">before_script:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">MR</span> <span class="string">Commit</span> <span class="string">Ref</span> <span class="string">Name,</span> <span class="string">$CI_COMMIT_REF_SLUG</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">user</span> <span class="string">email,</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">Builder</span> <span class="string">DIR,</span> <span class="string">$CI_BUILDS_DIR</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">Project</span> <span class="string">Name,</span> <span class="string">$CI_PROJECT_NAME</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">Project</span> <span class="string">Url,</span> <span class="string">$CI_PROJECT_URL</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">Runner</span> <span class="string">ID,</span> <span class="string">$CI_RUNNER_ID</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">echo</span> <span class="string">Runner</span> <span class="string">Description,</span> <span class="string">$CI_RUNNER_DESCRIPTION</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">pwd</span></span><br></pre></td></tr></table></figure></li>
+<li><p>接下來就是一個一個 <code>stage</code> 來定義該做些什麼事</p>
+<p> 先定義一個狀態名叫 start_stage，他對應的狀態是 start，他該做的事會寫在 script，然而通常通知 Slack 的腳本是可以共用的，所以可以呼叫某個位置的腳本來執行，並且在後面帶入想要傳達的訊息。</p>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">start_stage:</span> <span class="comment"># 狀態名，會顯示 pipeline 上</span></span><br><span class="line"><span class="attr">stage:</span> <span class="string">start</span> <span class="comment"># 對應的狀態是什麼？</span></span><br><span class="line"><span class="attr">script:</span> <span class="comment"># 該狀態會做些什麼？</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/NoticeSlackScript.sh</span> <span class="string">$CI_PROJECT_NAME</span> <span class="string">$CI_PROJECT_URL</span> <span class="string">$CI_RUNNER_ID</span> <span class="string">$CI_RUNNER_DESCRIPTION</span> <span class="string">$CI_COMMIT_REF_SLUG</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="額外設定"><a href="#額外設定" class="headerlink" title="額外設定"></a>額外設定</h1><ul>
+<li>使用 <code>only</code> =&gt; 指定分支 <ul>
+<li>如果只想要 master 上執行，可以用 only: master 來指定分支</li>
+<li>或是想要有 tag 才執行，可以用 only: tag 來指定</li>
+</ul>
+</li>
+<li>使用 <code>when</code> =&gt; 指定特定狀態<ul>
+<li>基本上 lint、build、unittest 是依序執行的，但只要 lint 失敗，build、unittest 會跳過 skip，可以用 when: always 無論如何都會執行！</li>
+<li>CI 的最後結果是成功或是失敗，可以用 when: on_success 和 when: on_failure 來定義！</li>
+</ul>
+</li>
+</ul>
+<img src="/pinkblog/2022/11/14/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8B/ex1.jpg" class="">
+
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tracing_stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">tracing</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">always</span> <span class="comment"># 不管前面 stage 是否失敗都會執行</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/TracingScript.sh</span></span><br><span class="line"></span><br><span class="line"><span class="attr">end_stage_success:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">end</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">on_success</span> <span class="comment"># CI 成功</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/NoticeSlackSuccess.sh</span> <span class="string">$CI_PROJECT_NAME</span> <span class="string">$CI_PROJECT_URL</span> <span class="string">$CI_RUNNER_ID</span> <span class="string">$CI_RUNNER_DESCRIPTION</span> <span class="string">$CI_COMMIT_REF_SLUG</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br><span class="line"></span><br><span class="line"><span class="attr">end_stage_failure:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">end</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">on_failure</span> <span class="comment"># CI 失敗 ( 流程中有發生編譯錯誤等等 )</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/NoticeSlackFailure.sh</span> <span class="string">$CI_PROJECT_NAME</span> <span class="string">$CI_PROJECT_URL</span> <span class="string">$CI_RUNNER_ID</span> <span class="string">$CI_RUNNER_DESCRIPTION</span> <span class="string">$CI_COMMIT_REF_SLUG</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="完整範例"><a href="#完整範例" class="headerlink" title="完整範例"></a>完整範例</h1><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># stages: 定義有哪些狀態</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">start</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">lint</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">unittest</span></span><br><span class="line">  <span class="comment"># - archive</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">tracing</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 先行腳本: 下面每一個 stage 都會先跑這段</span></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">MR</span> <span class="string">Commit</span> <span class="string">Ref</span> <span class="string">Name,</span> <span class="string">$CI_COMMIT_REF_SLUG</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">user</span> <span class="string">email,</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">Builder</span> <span class="string">DIR,</span> <span class="string">$CI_BUILDS_DIR</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">Project</span> <span class="string">Name,</span> <span class="string">$CI_PROJECT_NAME</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">Project</span> <span class="string">Url,</span> <span class="string">$CI_PROJECT_URL</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">Runner</span> <span class="string">ID,</span> <span class="string">$CI_RUNNER_ID</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">echo</span> <span class="string">Runner</span> <span class="string">Description,</span> <span class="string">$CI_RUNNER_DESCRIPTION</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pwd</span></span><br><span class="line"></span><br><span class="line"><span class="attr">start_stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">start</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/NoticeSlackScript.sh</span> <span class="string">$CI_PROJECT_NAME</span> <span class="string">$CI_PROJECT_URL</span> <span class="string">$CI_RUNNER_ID</span> <span class="string">$CI_RUNNER_DESCRIPTION</span> <span class="string">$CI_COMMIT_REF_SLUG</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lint_stage_lint:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">lint</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">swiftlint</span> <span class="string">lint</span> <span class="string">--config</span> <span class="string">.swiftlint.yml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">lint_stage_format:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">lint</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">swiftformat</span> <span class="string">--lint</span> <span class="string">.</span> <span class="string">--config</span> <span class="string">.swiftformat</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build_stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">xcodebuild</span> <span class="string">-list</span> <span class="string">-workspace</span> <span class="string">SampleApp.xcworkspace</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">xcodebuild</span> <span class="string">clean</span> <span class="string">-workspace</span> <span class="string">SampleApp.xcworkspace</span> <span class="string">-scheme</span> <span class="string">SampleApp</span> <span class="string">|</span> <span class="string">xcpretty</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">xcodebuild</span> <span class="string">build</span> <span class="string">-workspace</span> <span class="string">SampleApp.xcworkspace</span> <span class="string">-scheme</span> <span class="string">SampleApp</span> <span class="string">-destination</span> <span class="string">&#x27;platform=iOS Simulator,name=iPhone 8,OS=14.1&#x27;</span> <span class="string">|</span> <span class="string">xcpretty</span> <span class="string">-s</span></span><br><span class="line"></span><br><span class="line"><span class="attr">unittest_stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">unittest</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">xcodebuild</span> <span class="string">clean</span> <span class="string">-workspace</span> <span class="string">SampleApp.xcworkspace</span> <span class="string">-scheme</span> <span class="string">SampleApp</span> <span class="string">|</span> <span class="string">xcpretty</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">xcodebuild</span> <span class="string">test</span> <span class="string">-workspace</span> <span class="string">SampleApp.xcworkspace</span> <span class="string">-scheme</span> <span class="string">SampleApp</span> <span class="string">-enableCodeCoverage</span> <span class="literal">YES</span> <span class="string">-destination</span> <span class="string">&#x27;platform=iOS Simulator,name=iPhone 8,OS=14.1&#x27;</span> <span class="string">|</span> <span class="string">xcpretty</span> <span class="string">-s</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">slather</span> <span class="string">coverage</span> <span class="string">--scheme</span> <span class="string">SampleApp</span> <span class="string">--workspace</span> <span class="string">SampleApp.xcworkspace</span> <span class="string">SampleApp.xcodeproj</span></span><br><span class="line"></span><br><span class="line"><span class="attr">tracing_stage:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">tracing</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/TracingScript.sh</span></span><br><span class="line"></span><br><span class="line"><span class="attr">end_stage_success:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">end</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">on_success</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/NoticeSlackSuccess.sh</span> <span class="string">$CI_PROJECT_NAME</span> <span class="string">$CI_PROJECT_URL</span> <span class="string">$CI_RUNNER_ID</span> <span class="string">$CI_RUNNER_DESCRIPTION</span> <span class="string">$CI_COMMIT_REF_SLUG</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br><span class="line"></span><br><span class="line"><span class="attr">end_stage_failure:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">end</span></span><br><span class="line">  <span class="attr">when:</span> <span class="string">on_failure</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sh</span> <span class="string">~/NoticeSlackFailure.sh</span> <span class="string">$CI_PROJECT_NAME</span> <span class="string">$CI_PROJECT_URL</span> <span class="string">$CI_RUNNER_ID</span> <span class="string">$CI_RUNNER_DESCRIPTION</span> <span class="string">$CI_COMMIT_REF_SLUG</span> <span class="string">$GITLAB_USER_EMAIL</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>.gitlab-ci.yml 的設定方式有千變萬化，同時請注意 gitlab 或 runner 的版本是否支援到你寫的腳本，更多東西可以去 <a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html">gitlab_ci_yaml</a> 官方網站去尋找。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/pinkblog/tags/iOS/">iOS</a><a class="post-meta__tags" href="/pinkblog/tags/CICD/">CICD</a></div><div class="post_share"></div></div><div><p>希望這篇文章有幫助到您的開發之路！如果能給我一些按讚支持，我會非常感謝您的鼓勵！祝壞蟲遠離您！</p><script type="text/javascript">document.write(
+"<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/tim801217/button?referrer=" +
+encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");</script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pinkblog/2022/11/22/%E8%A3%BD%E4%BD%9C-iOS-Debug-%E5%B0%8F%E5%B7%A5%E5%85%B7/"><img class="prev-cover" src="/pinkblog/2022/11/22/%E8%A3%BD%E4%BD%9C-iOS-Debug-%E5%B0%8F%E5%B7%A5%E5%85%B7/cover.PNG" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">製作 iOS Debug 小工具</div></div></a></div><div class="next-post pull-right"><a href="/pinkblog/2022/11/11/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8A/"><img class="next-cover" src="/pinkblog/2022/11/11/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8A/pankaj-patel-ZV_64LdGoao-unsplash.jpg" onerror="onerror=null;src='/pinkblog/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用 GitLab Runner 建立 CI 流程 - 上</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相關推薦</span></div><div class="relatedPosts-list"><div><a href="/pinkblog/2022/11/11/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8A/" title="使用 GitLab Runner 建立 CI 流程 - 上"><img class="cover" src="/pinkblog/2022/11/11/%E4%BD%BF%E7%94%A8-GitLab-Runner-%E5%BB%BA%E7%AB%8B-CI-%E6%B5%81%E7%A8%8B-%E4%B8%8A/pankaj-patel-ZV_64LdGoao-unsplash.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 11月 11 2022</div><div class="title">使用 GitLab Runner 建立 CI 流程 - 上</div></div></a></div><div><a href="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS-%E4%B8%8A/" title="iOS 模組化架構 (Modular Architecture in iOS) - 上"><img class="cover" src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS-%E4%B8%8A/unsplash_L0oJ4Dlfyuo.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 1月 9 2022</div><div class="title">iOS 模組化架構 (Modular Architecture in iOS) - 上</div></div></a></div><div><a href="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS-%E4%B8%8B/" title="iOS 模組化架構 (Modular Architecture in iOS) - 下"><img class="cover" src="/pinkblog/2022/01/09/iOS-%E6%A8%A1%E7%B5%84%E5%8C%96%E6%9E%B6%E6%A7%8B-Modular-Architecture-in-iOS-%E4%B8%8B/unsplash_L0oJ4Dlfyuo.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 1月 9 2022</div><div class="title">iOS 模組化架構 (Modular Architecture in iOS) - 下</div></div></a></div><div><a href="/pinkblog/2022/01/13/IBDesignable-%E5%92%8C-IBInspectable-%E7%9A%84%E5%8F%AF%E8%A6%96%E5%8C%96-View/" title="IBDesignable 和 IBInspectable 的可視化 View"><img class="cover" src="/pinkblog/2022/01/13/IBDesignable-%E5%92%8C-IBInspectable-%E7%9A%84%E5%8F%AF%E8%A6%96%E5%8C%96-View/unsplash_0Mg6zEBQs4s.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 1月 13 2022</div><div class="title">IBDesignable 和 IBInspectable 的可視化 View</div></div></a></div><div><a href="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/" title="Podspec 內使用三方、Asset、Storyboard、Xib"><img class="cover" src="/pinkblog/2022/01/16/Podspec-%E5%85%A7%E4%BD%BF%E7%94%A8%E4%B8%89%E6%96%B9%E3%80%81Asset%E3%80%81Storyboard%E3%80%81Xib/unsplash_t5YUoHW6zRo.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 1月 16 2022</div><div class="title">Podspec 內使用三方、Asset、Storyboard、Xib</div></div></a></div><div><a href="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/" title="Podspec 調整資料夾結構"><img class="cover" src="/pinkblog/2022/01/16/Podspec-%E8%AA%BF%E6%95%B4%E8%B3%87%E6%96%99%E5%A4%BE%E7%B5%90%E6%A7%8B/cover.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 1月 16 2022</div><div class="title">Podspec 調整資料夾結構</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 評論</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/pinkblog/img/avatar.jpg" onerror="this.onerror=null;this.src='/pinkblog/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">pinkpika</div><div class="author-info__description">Simplicity is the soul of efficiency.</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/pinkblog/archives/"><div class="headline">文章</div><div class="length-num">29</div></a></div><div class="card-info-data-item"><a href="/pinkblog/tags/"><div class="headline">標籤</div><div class="length-num">18</div></a></div><div class="card-info-data-item"><a href="/pinkblog/categories/"><div class="headline">分類</div><div class="length-num">6</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/pinkpika" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://twitter.com/pinkpika_coding" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.linkedin.com/in/pink-pika-42907613a/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a><a class="social-icon" href="mailto:tim801217@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目錄</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A"><span class="toc-number">1.</span> <span class="toc-text">基本設定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%8D%E5%A4%96%E8%A8%AD%E5%AE%9A"><span class="toc-number">2.</span> <span class="toc-text">額外設定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%AF%84%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">完整範例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AA%9E"><span class="toc-number">4.</span> <span class="toc-text">結語</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By pinkpika</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主題 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="閱讀模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="淺色和深色模式轉換"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="單欄和雙欄切換"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目錄"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直達評論"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到頂部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/pinkblog/js/utils.js"></script><script src="/pinkblog/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'pinkpika/pinkblog_giscus',
+    'data-repo-id': 'R_kgDOGuAMCw',
+    'data-category-id': 'DIC_kwDOGuAMC84CAzt2',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
